@@ -1,0 +1,122 @@
+---
+title: 'DATA 607: Assignment 1'
+output:
+  html_document:
+    df_print: paged
+---
+
+# Overview
+
+Air rage has taken off during the pandemic and shows no signs of slowing down any time soon. Even prior, individuals had [differing views toward activities such as seat reclining, control over the window shade, and bringing a baby onboard](https://fivethirtyeight.com/features/airplane-etiquette-recline-seat/). While attitudes toward flying differ, it begs the question of whether specific subsets of individuals have particular preferences. This analysis will be exploratory, with basic correlations. For our purposes, we will be focusing on attitudes toward bringing children on flights.
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(ggthemes)
+```
+ 
+
+```{r}
+url.data <- "https://raw.githubusercontent.com/fivethirtyeight/data/master/flying-etiquette-survey/flying-etiquette.csv"
+
+dat <- read.csv(url(url.data))
+nrow(dat)
+head(dat)
+```
+
+# Data Cleaning
+
+Here, we subset the data per our population of interest (people who have opinions about babies on planes)
+```{r}
+dat = janitor::clean_names(dat)
+dat = subset(dat, in_general_is_itrude_to_bring_a_baby_on_a_plane != "")
+```
+
+Now, we'd like to examine our population size:
+```{r}
+nrow(dat)
+```
+
+Here are the potential predictors:
+```{r}
+names(dat)
+```
+
+Based on this, we'll subset for demographic factors and questions about kids. We'll also preserve the respondent ID so we'll have a primary key.
+
+```{r}
+vars.identifiers = c("respondent_id", "gender", "age", "household_income", "education", "location_census_region")
+vars.questions = c("do_you_have_any_children_under_18", "in_general_is_itrude_to_bring_a_baby_on_a_plane", "in_general_is_it_rude_to_knowingly_bring_unruly_children_on_a_plane")
+
+dat = subset(dat, select = c(vars.identifiers,vars.questions ))
+
+```
+
+
+Some of these columns have long names, so we'll shorten them. We'll also shorten the response lengths:
+```{r}
+dat = dat %>% rename(children.under.18 = do_you_have_any_children_under_18,
+ rude.baby = in_general_is_itrude_to_bring_a_baby_on_a_plane, rude.child.unruly = in_general_is_it_rude_to_knowingly_bring_unruly_children_on_a_plane)
+
+dat$rude.baby = ifelse(grepl("not at all", dat$rude.baby), "No", ifelse(grepl("somewhat",  dat$rude.baby), "Somewhat", ifelse(grepl("Yes", dat$rude.baby), "Yes", NA)))
+
+dat$rude.child.unruly = ifelse(grepl("not at all", dat$rude.child.unruly), "No", ifelse(grepl("somewhat",  dat$rude.child.unruly), "Somewhat", ifelse(grepl("Yes", dat$rude.child.unruly), "Yes", NA)))
+
+```
+
+
+
+# Exploratory Data Correlations
+
+## Examining Responses to questions of interest
+```{r}
+p.rude.baby = ggplot(data=dat, aes(x=rude.baby)) + 
+      geom_bar(aes(y = (..count..))) + theme_minimal() + labs(x = "Rude to Have a Baby?", y = "Count")
+
+p.rude.child= ggplot(data=dat, aes(x=rude.child.unruly)) + 
+      geom_bar(aes(y = (..count..))) + theme_minimal() + labs(x = "Rude to Have an Unruly Child?", y = "Count")
+
+plot(p.rude.baby)
+plot(p.rude.child)
+
+```
+
+## Examining Demographic Distributions to Questions
+
+### Rude to have a baby onboard?
+```{r}
+
+dat$age = factor(dat$age, levels = c("18-29", "30-44", "45-60", "> 60", ""))
+
+p.rude.baby.gender = ggplot(data=dat, aes(x=rude.baby)) + 
+      geom_bar(aes(y = (..count..))) + theme_minimal() + labs(x = "Rude to Have a Baby? (by Gender)", y = "Count") + facet_wrap(~gender,nrow = 2)
+
+p.rude.baby.age = ggplot(data=dat, aes(x=rude.baby)) + 
+      geom_bar(aes(y = (..count..))) + theme_minimal() + labs(x = "Rude to Have a Baby? (by Age)", y = "Count") + facet_wrap(~age, nrow = 2)
+
+p.rude.baby.income= ggplot(data=dat, aes(x=rude.baby)) + 
+      geom_bar(aes(y = (..count..))) + theme_minimal() + labs(x = "Rude to Have a Baby? (by Income)", y = "Count") + facet_wrap(~household_income, nrow = 2)
+
+plot(p.rude.baby.gender)
+plot(p.rude.baby.age)
+plot(p.rude.baby.income)
+
+```
+
+### Rude to have an unruly child onboard?
+```{r}
+p.rude.child.unruly.gender = ggplot(data=dat, aes(x=rude.child.unruly)) + 
+      geom_bar(aes(y = (..count..))) + theme_minimal() + labs(x = "Rude to Have an unruly child? (by Gender)", y = "Count") + facet_wrap(~gender)
+
+p.rude.child.unruly.age = ggplot(data=dat, aes(x=rude.child.unruly)) + geom_bar(aes(y = (..count..))) + theme_minimal() + labs(x = "Rude to Have an unruly child? (by Age)", y = "Count") + facet_wrap(~age)
+
+p.rude.child.unruly.income= ggplot(data=dat, aes(x=rude.child.unruly)) + geom_bar(aes(y = (..count..))) + theme_minimal() + labs(x = "Rude to Have an unruly child? (by Income)", y = "Count") + facet_wrap(~household_income)
+
+plot(p.rude.child.unruly.gender)
+plot(p.rude.child.unruly.age)
+plot(p.rude.child.unruly.income)
+
+```
+
+# Conclusions
+Based on the visualizations, preliminary results suggest demographics influence attitudes towards traveling with minors. Future steps include an unsupervised analysis which may reveal specific subpopulations. This could create potential for ticket pricing, in which individuals with increased preferences can select seats based on needs. 
