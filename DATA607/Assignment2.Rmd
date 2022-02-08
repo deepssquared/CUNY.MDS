@@ -1,0 +1,79 @@
+---
+title: 'DATA 607: Assignment 2'
+output:
+  html_document:
+    df_print: paged
+---
+
+For this assignment, I will be querying (contrived) data on recent popular movies. We will be using two data tables: `participants` and `ratings` to obtain relevant information. These tables were created via data definition language commands and are available in the .sql file in this repository. 
+
+```{r}
+library(tidyverse)
+library(RSQLite)
+library(RPostgres)
+```
+
+
+# Database Connection
+
+```{r}
+
+con = dbConnect(RPostgres::Postgres()
+     , host='localhost'
+     , port='5432'
+     , dbname='deepikadilip'
+     , user='deepikadilip')
+
+tables <- dbListTables(con)
+
+print(tables)
+
+```
+
+# Visualizating the Tables
+
+## Participants Table
+```{r}
+res <- dbSendQuery(con, "SELECT * FROM participants")
+tbl.participants = dbFetch(res)
+dbClearResult(res)
+
+head(tbl.participants)
+
+```
+
+## Ratings Table
+```{r}
+res <- dbSendQuery(con, "SELECT * FROM ratings")
+tbl.ratings = dbFetch(res)
+dbClearResult(res)
+
+head(tbl.ratings)
+
+```
+
+# Exploratory Data Analysis
+Now that we have the tables, we can do some exploratory data analysis.
+
+Here is an overview of the number of ratings per movie:
+```{r}
+tbl.ratings %>% group_by(movie) %>% summarise(count = n()) %>% arrange( desc(count))
+
+```
+
+And how many ratings each participant provided:
+```{r}
+tbl.participants %>% left_join(tbl.ratings, by = "participant_id") %>% group_by(first_name, last_name) %>% summarise(count = n()) %>% arrange( desc(count))
+```
+
+As anticipated, some individuals didn't rate all the movies. Here, we'll produce a table of movies and the counts of the ratings totals. 
+
+```{r}
+tbl.merged = tbl.participants %>% left_join(tbl.ratings, by = "participant_id") 
+
+tbl.ratings.N = tbl.ratings %>% group_by(movie) %>% summarise(n = n())
+
+tbl.ratings.N = tbl.ratings.N %>% filter(n < 5)
+
+tbl.ratings.N
+```
