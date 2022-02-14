@@ -7,7 +7,7 @@ output:
 
 For this assignment, I will be querying (contrived) data on recent popular movies. We will be using two data tables: `participants` and `ratings` to obtain relevant information. These tables were created via data definition language commands and are available in the .sql file in this repository. 
 
-```{r}
+```{r, echo=F, warning=F}
 library(tidyverse)
 library(RSQLite)
 library(RPostgres)
@@ -15,6 +15,8 @@ library(RPostgres)
 
 
 # Database Connection
+
+The first step is connecting to our local database. We have two tables available for analysis, `participants` and `ratings`:
 
 ```{r}
 
@@ -33,6 +35,7 @@ print(tables)
 # Visualizating the Tables
 
 ## Participants Table
+
 ```{r}
 res <- dbSendQuery(con, "SELECT * FROM participants")
 tbl.participants = dbFetch(res)
@@ -43,6 +46,7 @@ head(tbl.participants)
 ```
 
 ## Ratings Table
+
 ```{r}
 res <- dbSendQuery(con, "SELECT * FROM ratings")
 tbl.ratings = dbFetch(res)
@@ -55,25 +59,60 @@ head(tbl.ratings)
 # Exploratory Data Analysis
 Now that we have the tables, we can do some exploratory data analysis.
 
-Here is an overview of the number of ratings per movie:
+* Here is an overview of the number of ratings per movie:
+
 ```{r}
-tbl.ratings %>% group_by(movie) %>% summarise(count = n()) %>% arrange( desc(count))
+tbl.ratings %>% group_by(movie) %>% summarise(count = n()) %>% arrange( desc(count)) 
 
 ```
 
-And how many ratings each participant provided:
+* And how many ratings each participant provided:
+
 ```{r}
 tbl.participants %>% left_join(tbl.ratings, by = "participant_id") %>% group_by(first_name, last_name) %>% summarise(count = n()) %>% arrange( desc(count))
 ```
 
-As anticipated, some individuals didn't rate all the movies. Here, we'll produce a table of movies and the counts of the ratings totals. 
+
+
+# Missing Data
+
+As anticipated, some individuals didn't rate all the movies. Here, we'll produce a table of movies and the counts of the ratings totals. This table will show all the movies that have fewer than 5 reviews (since there were five individuals). 
+
+The first step is merging the participants and ratings tables using a left join:
 
 ```{r}
 tbl.merged = tbl.participants %>% left_join(tbl.ratings, by = "participant_id") 
 
-tbl.ratings.N = tbl.ratings %>% group_by(movie) %>% summarise(n = n())
+```
 
-tbl.ratings.N = tbl.ratings.N %>% filter(n < 5)
+Afterwards, we'll tabulate the movies with less than 5 reviews:
+```{r}
+
+tbl.ratings.N = tbl.ratings %>% group_by(movie) %>% summarise(TOTAL = n())
+
+tbl.ratings.N = tbl.ratings.N %>% filter(TOTAL < 5)
 
 tbl.ratings.N
 ```
+
+
+We'll also take a look at basic summary metrics for all the movies.
+
+```{r}
+
+tbl.ratings %>% group_by(movie) %>% summarise(MEAN = mean(rating), SD = sd(rating), TOTAL = n())
+
+```
+
+The last step is tabulate how many ratings each individual submitted, along with their average rating/standard deviation:
+
+```{r}
+tbl.merged %>% group_by(first_name, last_name) %>% summarise(n = n(), MEAN = mean(rating), SD = sd(rating))
+```
+
+# Takeaways
+
+Based on this, we can conclude the following:
+
+* Some will rate movies higher than others. Therefore, scaling the ratings per individual might be a better way to standardize the data.
+* Not all movies have a sufficient number of ratings. For the purposes of determining the best movie, excluding those with only one rating (SPIDERMAN and LICORICE PIZZA) would be pratical.
