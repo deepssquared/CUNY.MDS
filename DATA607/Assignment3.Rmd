@@ -60,9 +60,36 @@ print(vec.text.char)
 
 > 5. `"(.)(.)(.).*\\3\\2\\1"`
 
-1. One character appears three times in a row
-2. One character appears, followed by a second character twice, followed by the same character
-3. Two characters (can be different) repeated consecutively (e.g. `dodo`)
+1. If this string is fed into the function without the escape `\`, the pattern will flag any character, followed by two `\1`s. If `(.)\\1\\1` is used, one character appears three times in a row
+
+Example seen below:
+```{r}
+str_detect("ZZZ", "(.)\1\1")
+str_detect("Z\1\1", "(.)\1\1")
+```
+
+VS
+```{r}
+str_detect("ZZZ", "(.)\\1\\1")
+str_detect("Z\1\1", "(.)\\1\\1")
+```
+
+2. One character appears, followed by a second character twice, followed by the same character (e.g. `zooz`)
+3. If this string is fed into the function without the escape `\`, the pattern will flag two characters followed by `\1`. But if the escape character is included, then it will flag two characters (can be different) repeated consecutively (e.g. `dodo`)
+
+Example seen below:
+```{r}
+str_detect("zz\1", "(..)\1")
+str_detect("dodo", "(..)\1")
+```
+
+VS
+```{r}
+str_detect("zz\1", "(..)\\1")
+str_detect("dodo", "(..)\\1")
+``` 
+
+
 4. An original character, followed by any character followed by the original character, followed by any character, and then the original character again.
 5. Three original characters, followed by any number of characters, followed by the same characters in reversed order.
 
