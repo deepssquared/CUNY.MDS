@@ -74,7 +74,7 @@ print(vec.text.char)
 * Start and end with the same character.
 
 ```{r}
-str_view("civic", "(.).*\\1$", match = T)
+str_view("civic", "^(.).*\\1$", match = T)
 ```
 
 * Contain a repeated pair of letters (e.g. "church" contains "ch" repeated twice.)
