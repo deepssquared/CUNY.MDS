@@ -1,0 +1,91 @@
+---
+title: 'Data 607: Assignment 3'
+author: Deepika Dilip
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r, message=F, warning=F}
+library(tidyverse)
+library(ggplot2)
+library(stringr)
+```
+
+
+# Problem 1
+
+First we'll read in the dataset and then subset based on data/statistics strings
+
+```{r}
+df.college.majors = read.csv( url("https://raw.githubusercontent.com/fivethirtyeight/data/master/college-majors/majors-list.csv"))
+
+vec.majors = df.college.majors$Major[grep("DATA|STATISTICS", df.college.majors$Major)] 
+print(vec.majors)
+```
+
+
+# Problem 2
+
+To convert this to a properly formatted character string, we'll take the following steps:
+
+1. Remove bracketed numbers from the string
+2. Split the string based on quotation marks
+3. Subset based on values that contain letters
+
+
+```{r}
+vec.text = c('[1] "bell pepper"  "bilberry"     "blackberry"   "blood orange"
+[5] "blueberry"    "cantaloupe"   "chili pepper" "cloudberry"  
+[9] "elderberry"   "lime"         "lychee"       "mulberry"    
+[13] "olive"        "salal berry"')
+
+vec.text.char = gsub("(\\n\\[\\d+\\])|(^\\[\\d+\\])", "", vec.text)
+vec.text.char = strsplit(vec.text.char, '\\"')
+vec.text.char = unlist(vec.text.char)
+vec.text.char = vec.text.char[grep("[a-z]", vec.text.char)]
+print(vec.text.char)
+```
+
+# Problem 3
+
+
+> 1.`(.)\1\1`
+
+> 2. `(.)(.)\\2\\1`
+
+> 3. `(..)\1`
+
+> 4. `"(.).\\1.\\1"`
+
+> 5. `"(.)(.)(.).*\\3\\2\\1"`
+
+1. One character appears three times in a row
+2. One character appears, followed by a second character twice, followed by the same character
+3. Two characters (can be different) repeated consecutively (e.g. `dodo`)
+4. An original character, followed by any character followed by the original character, followed by any character, and then the original character again.
+5. Three original characters, followed by any number of characters, followed by the same characters in reversed order.
+
+
+# Problem 4: 
+
+**Construct regular expressions to match words that:** 
+
+* Start and end with the same character.
+
+```{r}
+str_view("civic", "(.).*\\1$", match = T)
+```
+
+* Contain a repeated pair of letters (e.g. "church" contains "ch" repeated twice.)
+
+```{r}
+str_view("church", "(..).*\\1", match = T)
+```
+
+
+* Contain one letter repeated in at least three places (e.g. "eleven" contains three "e"s.)
+
+```{r}
+str_view("eleven", "(.).*\\1.*\\1", match = T)
+```
