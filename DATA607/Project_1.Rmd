@@ -1,0 +1,85 @@
+---
+title: 'DATA 607: Project 1'
+author: "Deepika Dilip"
+date: "2/19/2022"
+output: html_document
+---
+
+```{r, warning = F}
+library(data.table)
+library(knitr)
+```
+
+# Read in Data 
+```{r}
+dat = read.delim2('tournament.txt', sep = '\t')
+vec.names = dat[1:2, ]
+dat = dat[apply(dat, 1, function(x) grepl(x, "(\\-)+")),]
+
+
+lst.dat = strsplit(dat, split = "\\s*\\|")
+mat.dat = t(do.call(cbind, lst.dat))
+dt.dat = data.table(mat.dat)
+setnames(dt.dat, c("Pair", "Player.Name", "Total.Pts", "Round.1", "Round.2", "Round.3", "Round.4", "Round.5", "Round.6", "Round.7"))
+
+dt.dat[, c("Player.Id", "Rating.Change"):= tstrsplit(Player.Name, "\\s*\\/\\s*")]
+
+```
+
+# Participants and State
+```{r}
+dt.participants = dt.dat[, .(Pair, Player.Id)]
+dt.participants[grepl("\\d+", Player.Id), Id := Player.Id]
+dt.participants[grepl("[a-z]+", Pair, ignore.case = T), State := Pair]
+dt.participants[, New.Id := shift(Id, -1L)]
+dt.participants[is.na(Id), Id := New.Id][, New.Id := NULL]
+
+dt.participants[, New.State := shift(State, -1L)]
+dt.participants[is.na(State), State := New.State][, New.State := NULL]
+dt.participants = dt.participants[grepl( "[A-Z]+", Player.Id),]
+kable(head(dt.participants))
+
+```
+
+# Total Points per Player
+```{r}
+dt.participants.merged = merge(dt.dat[grepl("\\d+", Pair), .(Pair, Total.Pts)], dt.participants, by = "Pair")
+kable(head(dt.participants.merged))
+```
+
+
+# Rating - Add Participants Rating
+```{r}
+dt.ratings = dt.dat[!is.na(Rating.Change), .(Player.Id, Rating.Change)]
+dt.ratings[, Rating.Change := gsub("R\\:", "", Rating.Change)]
+dt.ratings[, c("Pre.Rating", "Post.Rating") := tstrsplit(Rating.Change, "\\s*\\->\\s*")]
+dt.participants.merged = merge(dt.participants.merged, dt.ratings[,.(Player.Id, Pre.Rating)], by.x = "Id", by.y = "Player.Id")
+dt.participants.merged[, Pair := as.integer(Pair)]
+```
+
+
+# Opponents  - Average Rating
+```{r, warning = F}
+dt.opponents = dt.dat[grepl("\\d+",Pair), .(Pair, Round.1, Round.2, Round.3, Round.4, Round.5, Round.6, Round.7)]
+dt.opponents= as.data.table(apply(dt.opponents, 2, function(x) x= as.integer(gsub("[A-Z]\\s*(\\d+)", "\\1", x))))
+mlt.opponents = melt(dt.opponents, id.vars = "Pair", value.name = "Opp.Pair", variable.name = "Round")
+dt.opponents = merge(mlt.opponents, dt.participants.merged[, .(Pair, Pre.Rating)], by.x = "Opp.Pair", by.y = "Pair")
+```
+
+```{r, warning=F}
+dt.opponents[grepl("P\\d+", Pre.Rating), Pre.Rating := gsub("P\\d+", "", Pre.Rating)]
+dt.opponents[, Pre.Rating := as.integer(Pre.Rating)]
+dt.opponents.avg.rating = dt.opponents[, mean(Pre.Rating, na.rm = T), by = "Pair"]
+setnames(dt.opponents.avg.rating, "V1", "Avg.Rating")
+```
+
+
+# Merge
+```{r}
+dt.FINAL.TABLE = dt.opponents.avg.rating[dt.participants.merged, on = "Pair"]
+dt.FINAL.TABLE = dt.FINAL.TABLE[order(Pair), .(Player.Name = Player.Id, State, Total.Pts, Pre.Rating, Avg.Rating)]
+
+write.csv(dt.FINAL.TABLE, 'TOURNAMENT_FINAL.CSV', row.names = F)
+kable(dt.FINAL.TABLE)
+
+```
