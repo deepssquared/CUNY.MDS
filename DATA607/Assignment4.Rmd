@@ -1,0 +1,131 @@
+---
+title: "Assignment 4"
+author: "Deepika Dilip"
+date: "2/26/2022"
+output: 
+  html_document:
+    theme: cosmo
+    toc: true
+---
+
+# Import Libraries
+
+```{r setup, include=FALSE, echo = F}
+library(data.table)
+library(ggplot2)
+library(readxl)
+library(janitor)
+library(tidyverse)
+library(knitr)
+dir.home = '~/git/CUNY.MDS/DATA607/'
+```
+
+# Import Vaccination Data
+
+```{r cars, warning = F}
+dt.vaccine = read_xlsx(file.path(dir.home, 'israeli_vaccination_data_analysis_start.xlsx'))
+dt.vaccine = as.data.table(dt.vaccine[1:5, 1:5])
+colnames(dt.vaccine) = unlist(dt.vaccine[1, ])
+dt.vaccine = dt.vaccine[2:nrow(dt.vaccine), ]
+dt.vaccine = dt.vaccine %>% clean_names()
+writeLines(names(dt.vaccine))
+```
+
+## Shift from Cross Tabulation to Long Format
+
+Since this is a 2x2 contingency table, the first step would be to change this to a long format:
+
+```{r pressure}
+dt.vaccine[, age.new := shift(age, 1L)]
+dt.vaccine[!is.na(age), age := age]
+dt.vaccine[!is.na(age.new), age := age.new][, age.new := NULL]
+
+dt.vax.pct = dt.vaccine[, .(age, not_vax_percent, fully_vax_percent)]
+dt.vax.pct = melt(dt.vax.pct, id.vars = "age", value.name = "total")
+dt.vax.pct[, total := as.numeric(total)]
+dt.vax.pct[as.numeric(total) <= 1, var2 := "percent"]
+dt.vax.pct[total > 1, var2 := "N"]
+dt.vax.pct[grepl("fully\\_vax", variable), vax := "FULL"]
+dt.vax.pct[!grepl("fully\\_vax", variable), vax := "NOT_VAX"]
+
+dt.vax.per.100k = dt.vaccine[, .(age, not_vax_per_100k_p, fully_vax_per_100k)][!is.na(not_vax_per_100k_p),]
+
+kable(dt.vax.per.100k)
+```
+
+
+## Additional Variables
+
+We'll need to create some additional variables to format the table as needed
+```{r, warning = F}
+mlt.vax.100k = melt(dt.vax.per.100k, id.vars = "age", value.name = "counts")
+
+mlt.vax.100k[grepl("fully\\_vax", variable), vax := "FULL"]
+mlt.vax.100k[!grepl("fully\\_vax", variable), vax := "NOT_VAX"]
+
+```
+
+# Table Export
+
+The format below allows for aggregation functions:
+```{r, warning = F}
+dt.vax.merged = rbind(dt.vax.pct[, .(age, value = total, var2, vax)], mlt.vax.100k[, .(age, value = counts, vax, var2 = "per100k")])
+
+dt.vax.merged.wide = dcast(dt.vax.merged, age + vax ~ var2, fun.aggregate = max)
+setnames(dt.vax.merged.wide, "per100k", "severe_cases")
+dt.vax.merged.wide[, `:=` (N = as.numeric(N), severe_cases = as.numeric(severe_cases))]
+kable(dt.vax.merged.wide)
+```
+
+From here we can export the CSV
+```{r eval = F}
+write.csv(dt.vax.merged.wide, 'vaccine_table.csv', row.names = F)
+```
+
+# Health Questions
+
+## Question 1: Total Vaccine Population
+The total population would be as follows:
+```{r, warning = F}
+paste(sum(as.integer(dt.vax.merged.wide$N)), "total individuals eligible for vaccination") %>% writeLines()
+```
+
+This is the total number of people eligible for vaccination: this, in turn, depends on when the dataset was published. Assuming it was recent, this would be everyone ages 5 and up (excluding those with medical exemptions). The definition of fully vaccinated as changed as well--we could be only looking at individuals with two shots or considering fully boosted as our standard. 
+
+Israel's total population is 9 million so there's a discrepancy between this number and those eligible.
+
+## Question 2: Efficacy vs Disease
+
+### Effectiveness vs Disease for Totals
+```{r, warning = F}
+dt.vax.totals = dt.vax.merged.wide[,.(vax, N, severe_cases)][, lapply(.SD, sum, na.rm=TRUE), by=vax ]
+dt.vax.totals[, age := 'TOTAL']
+dt.vax.totals[, severe_per100k := (severe_cases/N)*100000]
+efficacy = 1-(dt.vax.totals[vax == "FULL", severe_per100k]/dt.vax.totals[vax == "NOT_VAX", severe_per100k])
+
+paste0(round(efficacy * 100, 2), '%', " Vaccine Effectiveness vs. Severe disease") %>% writeLines()
+```
+
+
+### Effectiveness vs Disease per age strata
+
+```{r, warning = F}
+dt.vax.merged.wide[, severe_per100k:= (severe_cases/N)*100000]
+efficacy.young = 1-(dt.vax.merged.wide[vax == "FULL" & age == '<50', severe_per100k]/dt.vax.merged.wide[vax == "NOT_VAX"  & age == '<50', severe_per100k])
+
+efficacy.old = 1-(dt.vax.merged.wide[vax == "FULL" & age == '>50', severe_per100k]/dt.vax.merged.wide[vax == "NOT_VAX"  & age == '>50', severe_per100k])
+
+paste0(round(efficacy.young * 100, 2), '%', " Vaccine Effectiveness vs. Severe disease (<50)") %>% writeLines()
+
+paste0(round(efficacy.old * 100, 2), '%', " Vaccine Effectiveness vs. Severe disease (>50)") %>% writeLines()
+```
+
+
+## Question 3: Severe Disease Case Rate (Unvaccinated vs Vaccinated)
+
+```{r, warning = F}
+rate.severe = dt.vax.totals[vax == 'NOT_VAX', severe_per100k]/dt.vax.totals[vax == 'FULL', severe_per100k]
+paste("The rate of severe disease is", round(rate.severe, 2), "times higher in unvaccinated individuals compared to those who are vaccinated") %>% writeLines()
+```
+
+
