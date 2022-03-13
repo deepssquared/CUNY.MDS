@@ -1,0 +1,168 @@
+---
+title: "Project 3"
+output:
+  html_document:
+    toc: true
+---
+
+# Acute Myeloid Leukemia
+
+In this dataset, I'll be using data from `cBioPortal` to analyze cases of acute myeloid leukemia.
+
+
+```{r warning = F, message = F}
+setwd("~/git/CUNY.MDS/DATA607/")
+library(data.table)
+library(snakecase)
+library(tidyverse)
+library(kableExtra)
+library(survival)
+library(survminer)
+library(ggpubr)
+library(broom)
+```
+
+## Feature Selection
+For our purposes, we'll be using survival data, alongside mutation data. We can subset the dataset for variables of interest:
+
+```{r warning = F, message = F}
+dataset3 = fread("aml_ohsu_2018_clinical_data.tsv")
+names(dataset3) = snakecase::to_mixed_case(names(dataset3))
+
+dataset3 = dataset3[, .(Patient_Id, Sample_Id, Overall_Survival_Months, Overall_Survival_Status, Tp_53_Mutation, Dnmt_3_A_Mutation, Eln_2017_Risk_Classification, Npm_1_Consensus_Call, Cumulative_Treatment_Regimens)]
+
+
+```
+
+
+# CSV Conversion:
+For the purposes of this assignment, we'll be using risk stratification for converting the dataset to wide form and populating the values with the respective mutations:
+
+Thei first step is consolidating risk categories:
+
+```{r warning = F, message = F}
+dataset3[, .N, by = "Eln_2017_Risk_Classification"] %>% kable %>% kable_styling( full_width = F) 
+```
+
+This is a bit messy, so we'l consolidate: 
+
+```{r}
+dataset3[grepl("favorable", Eln_2017_Risk_Classification, ignore.case = T), Risk.Classification := "Good"]
+dataset3[grepl("Adverse", Eln_2017_Risk_Classification, ignore.case = T), Risk.Classification := "Poor"]
+dataset3[grepl("Intermediate", Eln_2017_Risk_Classification, ignore.case = T), Risk.Classification := "Intermediate"]
+dataset3[is.na(Risk.Classification), Risk.Classification := "Unknown"]
+dataset3[, Risk.Classification := factor(Risk.Classification, levels = c("Poor", "Intermediate", "Good"))]
+dataset3[, .N, by = "Risk.Classification"] %>% kable %>% kable_styling( full_width = F, position = "left") 
+```
+
+Most patients here have one sample but some have two. For the sake of the export, we'll parse the treatment regimens into wide form.
+
+```{r}
+treatment = dataset3[,.(Patient_Id, Cumulative_Treatment_Regimens)]
+lst.split = strsplit(treatment$Cumulative_Treatment_Regimens, split = "\\|")
+
+lst.split.new = list()
+for (i in 1:length(lst.split)) {
+  vec = lst.split[[i]]
+  vec = unlist(vec)
+  if (length(vec) < 13) {
+    Y = 13 - length(vec)
+    na.vec = rep(NA, Y)
+    vec = c(vec, na.vec)
+  }
+  lst.split.new[[i]] = vec
+}
+
+
+mat.treatments = do.call(rbind, lst.split.new)
+colnames(mat.treatments) = paste0("treatment_", 1:ncol(mat.treatments))
+rownames(mat.treatments) = treatment$Patient_Id
+
+dt.treatment = as.data.table(mat.treatments, keep.rownames = "Patient_Id")
+```
+
+We can merge this data.table back and export:
+```{r}
+dt.wide = merge(dataset3[, .(Patient_Id, Sample_Id, Overall_Survival_Months, Overall_Survival_Status, Tp_53_Mutation, Dnmt_3_A_Mutation, Risk.Classification, Npm_1_Consensus_Call)], dt.treatment, by = "Patient_Id")
+
+head(dt.wide) %>% kable %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F, position = "left") 
+write.csv(dt.wide, file = "dataset3.csv")
+```
+
+# Data Analysis:
+
+The first step is making the mutation data boolean expressions. We'll also do the same with survival:
+
+
+```{r}
+dataset3[is.na(Tp_53_Mutation), TP53 := FALSE]
+dataset3[!is.na(Tp_53_Mutation), TP53 := TRUE]
+
+dataset3[is.na(Npm_1_Consensus_Call), NPM1 := FALSE]
+dataset3[!is.na(Npm_1_Consensus_Call), NPM1 := TRUE]
+
+dataset3[is.na(Dnmt_3_A_Mutation), DNMT3A := FALSE]
+dataset3[!is.na(Dnmt_3_A_Mutation), DNMT3A := TRUE]
+
+dataset3[grepl("deceased", Overall_Survival_Status, ignore.case = T), SURVIVAL := 1]
+dataset3[grepl("alive", Overall_Survival_Status, ignore.case = T), SURVIVAL := 0]
+
+```
+
+From here, we'll fit Cox-Proportional Hazards models for : 1) TP53 mutations 2) DNMT3A mutations 3) Interactions between TP53/DNMT3A 4) NPM1 mutations
+
+```{r}
+
+tbl = rbind(tidy(coxph(Surv(Overall_Survival_Months, SURVIVAL) ~ TP53, data=dataset3)), 
+      tidy(coxph(Surv(Overall_Survival_Months, SURVIVAL) ~ DNMT3A, data=dataset3)),
+      tidy(coxph(Surv(Overall_Survival_Months, SURVIVAL) ~ NPM1, data=dataset3)))
+
+tbl %>% kable() %>%  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F, position= "left") 
+
+tidy(coxph(Surv(Overall_Survival_Months, SURVIVAL) ~ TP53*DNMT3A, data=dataset3)) %>% kable() %>%  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F, position = "left") 
+
+```
+
+
+We'll visualize these results as well:
+
+```{r}
+
+plot0 = ggsurvplot(
+    fit = survfit(Surv(Overall_Survival_Months, SURVIVAL) ~ factor(Risk.Classification), data = dataset3), 
+    xlab = "Days", 
+    ylab = "Overall survival probability (TP53)", ggtheme = theme_minimal()) 
+
+plot1 = ggsurvplot(
+    fit = survfit(Surv(Overall_Survival_Months, SURVIVAL) ~ TP53, data = dataset3), 
+    xlab = "Days", 
+    ylab = "Overall survival probability (TP53)", ggtheme = theme_minimal()) 
+
+plot2 = ggsurvplot(
+    fit = survfit(Surv(Overall_Survival_Months, SURVIVAL) ~ DNMT3A, data = dataset3), 
+    xlab = "Days", 
+    ylab = "Overall survival probability (DNMT3A)", ggtheme = theme_minimal()) 
+
+
+plot3 = ggsurvplot(
+    fit = survfit(Surv(Overall_Survival_Months, SURVIVAL) ~ NPM1, data = dataset3), 
+    xlab = "Days", 
+    ylab = "Overall survival probability (NPM1)", ggtheme = theme_minimal()) 
+
+
+plot0
+plot1
+plot2
+plot3
+
+```
+
+# Conclusions
+
+Based on our findings, we can conclude the following:
+
+* TP53 mutations are statistically significantly associated with worse survival. This makes sense since TP53 is an oncogene. 
+* DNMT3A is also associated with worse survival. This is most likely correlated with epigenetic markers that influence gene expression.
+* Interaction with both mutations has an increased negative effect on prognosis.
+* We most likely need to parse the risk classification in more detail because the model wasn't indicative.
+

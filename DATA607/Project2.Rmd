@@ -1,0 +1,147 @@
+---
+title: "Project 2, Dataset 1"
+author: "Deepika Dilip"
+date: "3/12/2022"
+output:
+  html_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+library(data.table)
+library(ggplot2)
+library(ggthemes)
+library(plotly)
+library(lubridate)
+library(kableExtra)
+library(tidyverse)
+```
+
+
+# Overview
+
+For this analysis, we'll be looking at COVID-19 cases and deaths by state over time. We'll be using the CDC dataset. For our analysis, we will be doing the following:
+
+1. Compare and comfirm/probable cases by season and state
+2. Compare and comfirm/probable deaths by season and state
+3. Compare the time gap between data creation and submission by state
+
+## Step 1: CSV
+First, we'll read the dataset in
+```{r cars}
+setwd('~/git/CUNY.MDS/DATA607/')
+dataset.1 = as.data.table(read.csv(url('https://data.cdc.gov/resource/9mfq-cb36.csv')))
+head(dataset.1) %>% kable() %>% kable_styling( full_width = F)
+```
+
+Right off the bat, we notice this dataset has a wide structure--which is great for the purposes of exporting the CSV file! We do need to manipulate the date stamps though and change a couple of these variables to booleans:
+
+```{r}
+dataset.1[ , `:=` (submission_date = as_date(submission_date), created_at = as_date(created_at))]
+dataset.1[consent_cases == 'Agree', consent_cases.boolean := T]
+dataset.1[consent_cases == 'Not agree', consent_cases.boolean := F]
+dataset.1[!(consent_cases %in%  c('Agree', 'Not agree')), consent_cases.boolean := NA]
+
+dataset.1[consent_deaths == 'Agree', consent_deaths.boolean := T]
+dataset.1[consent_deaths == 'Not agree', consent_deaths.boolean := F]
+dataset.1[!(consent_deaths %in%  c('Agree', 'Not agree')), consent_deaths.boolean := NA]
+
+head(dataset.1) %>% kable() %>% kable_styling( full_width = F)
+
+```
+
+
+We also need to create the `season` variable. To do this, we'll create a function to do just that:
+
+```{r}
+
+getSeason = function(x) {
+ winter = list(lubridate::interval(ymd("19721221"),ymd("19721231")), lubridate::interval(ymd("19720101"),ymd("19720319")))
+  #winter <- lubridate::interval(ymd("19720101"),ymd("19720319"))
+  spring <- lubridate::interval(ymd("19720320"),ymd("19720619"))
+  summer <- lubridate::interval(ymd("19720620"),ymd("19720921"))
+  fall <- lubridate::interval(ymd("19720922"),ymd("19721220"))
+  x = as_date(x)
+  year(x) = 1972
+  if (x %within% winter) {
+    return("winter")
+  } else if (x %within% spring) {
+    return("spring")
+  } else if (x %within% summer) {
+    return("summer")
+  } else if (x %within% fall) {
+    return("fall")
+  } else {
+    return(NA)
+  }
+}
+
+dataset.1[, season := sapply(submission_date, getSeason)]
+dataset.1[, table(season)] %>% kable() %>% kable_styling( full_width = F)
+
+```
+
+
+From here we can export
+```{r}
+write.csv(dataset.1, 'dataset1.csv', row.names = F)
+```
+
+# Step 2: Analysis
+
+*Season and State Correlations*
+
+From our manufactured variables, we can produce the tables of interest:
+```{r}
+dataset.1[order(state), list(prob_cases_total = sum(prob_cases, na.rm = T), prob_deaths_total = sum(prob_death, na.rm = T)), by = "state"]%>% kable() %>% kable_styling( full_width = F)
+dataset.1[order(season), list(prob_cases_total = sum(prob_cases, na.rm = T), prob_deaths_total = sum(prob_death, na.rm = T)), by = "season"] %>% kable() %>% kable_styling( full_width = F)
+```
+
+### Time Gap
+
+The time gap would involve creating a new variable. We can aggregate it by mean time gap per state:
+
+```{r}
+dataset.1[, time.gap := difftime(created_at, submission_date, units = "days")]
+time.lag = dataset.1[order(state), list(mean_time_gap = mean(time.gap, na.rm = T)), by = "state"]  
+
+time.lag %>% kable() %>% kable_styling( full_width = F)
+
+plt.time.lag = ggplot(time.lag, aes(x = state, y = mean_time_gap)) + geom_bar(fill = 'lightpink', stat = "identity") + theme_minimal()  + labs(x = "State", y = "Mean Time Gap", title = "Time Gap per State") + theme(axis.text.x =  element_text(angle = 90, vjust = 0.5, hjust=1))
+
+ggplotly(plt.time.lag)
+```
+
+The states with the highest time lag values:
+```{r}
+time.lag[order(mean_time_gap, decreasing = T),][1:10] %>% kable() %>% kable_styling( full_width = F)
+```
+
+```{r}
+dataset.1[, year := year(submission_date)]
+dataset.1[, season := factor(season, c("winter", "spring", "summer", "fall"))]
+
+season.cases = dataset.1[,list(prob_cases_total = sum(prob_cases, na.rm = T), prob_deaths_total = sum(prob_death, na.rm = T)), by = c("year", "season")]
+season.cases = season.cases[order(year, season)]
+```
+
+### Season Plots
+
+```{r}
+season.cases[, time.period := paste0(year,"_", season)]
+plt.seasons.cases = ggplot(season.cases, aes(x = season, y = prob_cases_total)) + geom_bar(fill = 'darkblue', stat = "identity") + theme_minimal()  + labs(x = "Season/Year", y = "Probable Cases (Total)", title = "Probable Cases per Season/Year") + theme(axis.text.x =  element_text(angle = 90, vjust = 0.5, hjust=1)) + facet_wrap(~year)
+plt.seasons.deaths = ggplot(season.cases, aes(x = season, y = prob_deaths_total)) + geom_bar(fill = 'seagreen', stat = "identity") + theme_minimal()  + labs(x = "Season/Year", y = "Probable Deaths (Total)", title = "Probable Deaths per Season/Year") + theme(axis.text.x =  element_text(angle = 90, vjust = 0.5, hjust=1)) + facet_wrap(~year)
+
+ggplotly(plt.seasons.cases)
+ggplotly(plt.seasons.deaths)
+
+```
+
+
+# Key Takeaways
+
+Based on our analysis, we can conclude the following:
+
+* Fall to winter indicated the higher rate of increase for probable cases
+* The trend was also observed in probable deaths BUT the trend oscillated a bit. This is most likely due to improved surveillance; as a result the death count is less likely to be probable and more likely to be confirmed.
+* ME, IN, NE, CA, MS, and MD had some of the states with the highest time gaps between probable cases and deaths.

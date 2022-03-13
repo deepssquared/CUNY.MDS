@@ -1,0 +1,175 @@
+---
+title: "Project 2, Dataset 2"
+author: "Deepika Dilip"
+date: "3/13/2022"
+output:
+  html_document:
+    toc: true
+---
+
+```{r setup, include=FALSE, warning = F}
+library(data.table)
+library(ggplot2)
+library(ggthemes)
+library(plotly)
+library(lubridate)
+library(kableExtra)
+library(tidyverse)
+library(kaggler)
+library(DescTools)
+library(GoodmanKruskal)
+library(broom)
+```
+
+# Dataset 2: Chicago Food Inspections
+
+For this round, we'll be looking at Chicago food inspection data. Our analysis question is as follows:
+
+**Find out if there is a trend of type of facilities and their risk level given by the inspector.**
+
+```{r cars, warning = F}
+setwd('~/git/CUNY.MDS/DATA607')
+dataset2 = fread('food-inspections.csv')
+```
+
+
+# CSV Export
+
+The first step we'll take here is eliminating unecessary columns:
+
+```{r}
+writeLines(names(dataset2)) %>% kable()
+```
+
+A bunch of these columns are empty, so we'll drop them:
+```{r}
+dataset2[, `:=` (`Historical Wards 2003-2015` = NULL, `Zip Codes` = NULL, `Census Tracts` = NULL, `Community Areas` = NULL, `Wards` = NULL, `Location` = NULL)]
+```
+
+## Recoding variables
+We'll start by grouping the inspection types by buckets into more granular categories.
+```{r}
+dataset2[, .N, by = "Inspection Type"][order(N, decreasing = T),][1:10, ] %>% kable %>% kable_styling( full_width = F, position = "left") 
+dataset2[grepl(pattern = "Canvass(.)?", `Inspection Type`, ignore.case = T), Inspection.Recoded := 'CANVASS']
+dataset2[grepl(pattern = "Complaint(.)?", `Inspection Type`, ignore.case = T), Inspection.Recoded := 'COMPLAINT']
+dataset2[grepl(pattern = "License(.)?", `Inspection Type`, ignore.case = T), Inspection.Recoded := 'LICENSE']
+dataset2[grepl(pattern = "Food(.)?", `Inspection Type`, ignore.case = T), Inspection.Recoded := 'FOOD']
+dataset2[grepl(pattern = "Fire(.)?", `Inspection Type`, ignore.case = T), Inspection.Recoded := 'FIRE']
+dataset2[is.na(Inspection.Recoded), Inspection.Recoded := 'OTHER']
+
+dataset2[, .N, by = "Inspection.Recoded"][order(N, decreasing = T),]%>% kable %>% kable_styling( full_width = F, position = "left") 
+
+```
+
+Risk level also needs to be cleaned up a bit and releveled:
+
+```{r}
+dataset2[, .N, by = "Risk"][order(N, decreasing = T),]%>% kable %>% kable_styling( full_width = F, position = "left") 
+```
+
+We'll recode here:
+```{r}
+dataset2[grepl("Risk\\s*1", Risk), Risk.Recoded := "High"]
+dataset2[grepl("Risk\\s*2", Risk), Risk.Recoded := "Medium"]
+dataset2[grepl("Risk\\s*3", Risk), Risk.Recoded := "Low"]
+dataset2[(grepl("All", Risk) | Risk == ""), Risk.Recoded := "Other"]
+dataset2[, Risk.Recoded := factor(Risk.Recoded, levels = c("Low", "Medium", "High", "Other"))]
+
+dataset2[, .N, by = "Risk.Recoded"][order(N, decreasing = T),]%>% kable %>% kable_styling( full_width = F, position = "left") 
+
+```
+
+
+The last variable that needs recoding is facility type. We can aggregate it into buckets
+
+From this:
+```{r}
+dataset2[, .N, by = (`Facility Type`)][1:20,][order(N, decreasing = T)]  %>% kable %>% kable_styling( full_width = F, position = "left") 
+```
+
+To this:
+```{r}
+dataset2[grepl("restaurant", `Facility Type`, ignore.case = T), Type.Recoded := "Restaurant"]
+dataset2[grepl("grocery\\s*|groceries\\s*", `Facility Type`, ignore.case = T), Type.Recoded := "Grocery"]
+dataset2[grepl("school", `Facility Type`, ignore.case = T), Type.Recoded := "School"]
+dataset2[grepl("bakery", `Facility Type`, ignore.case = T), Type.Recoded := "Bakery"]
+dataset2[grepl("daycase", `Facility Type`, ignore.case = T), Type.Recoded := "Daycare"]
+
+dataset2[grepl("liquor|tavern|alcohol", `Facility Type`, ignore.case = T), Type.Recoded := "Liquor"]
+dataset2[grepl("mobile\\s*food", `Facility Type`, ignore.case = T), Type.Recoded := "Mobile Food"]
+dataset2[is.na(Type.Recoded), Type.Recoded := "Other"]
+
+dataset2[, table(Type.Recoded, useNA = "always")] %>% kable %>% kable_styling( full_width = F, position = "left") 
+```
+
+## Geographic Visual
+
+This won't give us a fancy map, but will be helpful in observing geographical spread:
+```{r warning = F}
+#geom.points = dataset2[, list(`Inspection ID` = sample(`Inspection ID`, 1)), by = "Zip"]
+geom.points = dataset2[sample(1:nrow(dataset2), 10000, replace = F),]
+
+#geom.points = merge(geom.points, dataset2, by = "Inspection ID")
+
+geo.plot = ggplot(geom.points, aes(Longitude, Latitude, color =  Risk.Recoded)) +
+  geom_point(size = .25, show.legend = TRUE) +
+  coord_quickmap() +
+  theme_minimal() +
+  scale_color_canva()
+
+ggplotly(geo.plot)
+```
+
+## Data Casting
+From here, we'll cast the data based on the inspection type:
+```{r}
+wide.data = dataset2[, .(`Inspection ID`, Inspection.Recoded, Results)]
+
+wide.data = dcast(wide.data, formula = `Inspection ID` ~  Inspection.Recoded , fun = max, value.var = "Results")
+
+head(wide.data)  %>% kable %>% kable_styling( full_width = F, position = "left") 
+```
+
+## Export
+```{r}
+dataset2.wide = merge(dataset2[, -c("Inspection Type", "Results", "Inspection.Recoded", "Risk")], wide.data, by = "Inspection ID")
+
+write.csv(dataset2.wide, file = "dataset2_wide.csv", row.names = F)
+```
+
+
+# Analysis
+
+**Question: Find out if there is a trend of type of facilities and their risk level given by the inspector.**
+
+We can start with some exploratory data analysis and produce a table with the highest risk percentage per risk strata.
+
+```{r}
+risk.total = dataset2[, list(total.risk.N = .N), by = "Risk.Recoded"]
+risk.total = merge(dataset2[, .N, by = c("Risk.Recoded", "Type.Recoded")], risk.total, by = "Risk.Recoded")
+risk.total[, percent := round(N/total.risk.N, 2)]
+risk.total[, .SD[which.max(percent)], by = c("Risk.Recoded")] %>% kable %>% kable_styling( full_width = F, position = "left") 
+```
+
+The next step is using a statistical test for categorical variables:
+
+```{r}
+
+table(dataset2[Type.Recoded != "Other"]$Type.Recoded, dataset2[Type.Recoded != "Other"]$Risk.Recoded) %>% kable %>% kable_styling( full_width = F, position = "left") 
+
+chisq.test(table(dataset2[Type.Recoded != "Other"]$Type.Recoded, dataset2[Type.Recoded != "Other"]$Risk.Recoded)) %>% tidy() %>% kable %>% kable_styling( full_width = F, position = "left") 
+```
+
+Since risk has ordered levels, we should also calculate the Cramer's correlation coefficient
+
+```{r}
+CramerV(dataset2$Type.Recoded, dataset2$Risk.Recoded)
+```
+
+# Key Takeaways
+
+Based on results, we can conlude the following
+
+* Grocery stores have the lowest level of risk for food inspections
+* Restaurants have the highest proportion of medium and high risk inspections
+* This obviously is skewed, since restaurants are the bulk of inspections to begin with. 
