@@ -1,0 +1,156 @@
+---
+title: "Assignment 5"
+author: "Deepika Dilip"
+date: "2/26/2022"
+output: 
+  html_document:
+    theme: cosmo
+    toc: true
+---
+
+
+# Import Libraries
+
+```{r setup, warning=F, message = F}
+library(data.table)
+library(ggplot2)
+library(janitor)
+library(tidyverse)
+library(knitr)
+library(XML)
+library(kableExtra)
+library(htmltools)
+library(rjson)
+
+dir.home = '~/git/CUNY.MDS/DATA607/'
+setwd(dir.home)
+```
+
+# Data Preview
+
+For reference, here's the book data, we'll be working with
+
+```{r}
+fread('books.csv') %>% kable() %>% kable_styling(bootstrap_options = "basic")
+```
+
+# XML File
+
+I started by manually creating an XML file:
+```{r, echo = F}
+vec.xml = c('<?xml version="1.0" encoding="UTF-8"?>
+<bookstore>
+  <book>
+    <title>And Then There Were None</title>
+    <Author>Agatha Christie</Author>
+    <Attribute.1>Thrilling</Attribute.1>
+    <Attribute.2>Suspenseful</Attribute.2>
+  </book>
+  <book>
+    <title>Dreamland</title>
+    <Author>Sam Quinones</Author>
+    <Attribute.1>Informative</Attribute.1>
+    <Attribute.2>Saddening</Attribute.2>
+    <Attribute.3>Detailed</Attribute.3>
+  </book>
+  <book>
+    <title>The Great Gatsby</title>
+    <Author>Scott Fitzgerald</Author>
+    <Attribute.1>Thoughtful</Attribute.1>
+    <Attribute.2>Tragic</Attribute.2>
+  </book>
+</bookstore>')
+writeLines(vec.xml)
+```
+
+From here, we'll use the built-in R command to convert the data
+
+```{r}
+xmlToDataFrame(vec.xml) %>% kable() %>% kable_styling(bootstrap_options = "basic")
+```
+
+# HTML File
+
+Similar to the XML file, I manually created an HTML file:
+```{r, echo = F}
+vec.html = c('<html>
+<table>
+ <tr>
+  <td>Title</td>
+  <td>Author</td>
+  <td>Attribute.1</td>
+  <td>Attribute.2</td>
+  <td>Attribute.3</td>
+ </tr>
+ <tr>
+  <td>And Then There Were None</td>
+  <td>Agatha Christie</td>
+  <td>Thrilling</td>
+  <td>Suspenseful</td>
+ </tr>
+ <tr>
+  <td>Dreamland</td>
+  <td>Sam Quinones</span></td>
+  <td>Informative</td>
+  <td>Saddening</td>
+  <td>Detailed</td>
+ </tr>
+ <tr>
+  <td>The Great Gatsby</td>
+  <td>Scott Fitzgerald</td>
+  <td>Thoughtful</td>
+ </tr>
+</table>
+</html>')
+writeLines(vec.html)
+```
+
+From here, we'll use the `xml` package to parse the file:
+
+```{r,  results='asis'}
+html.tbl = htmlParse(vec.html) %>% readHTMLTable()
+html.tbl$`NULL` %>% kable() %>%  kable_styling(bootstrap_options = "basic")
+```
+
+
+# JSON File
+I manually created a JSON file:
+```{r, echo = F}
+vec.json = c('[
+ {
+   "Title": "And Then There Were None",
+   "Author": "Agatha Christie",
+   "Attribute.1": "Thrilling",
+   "Attribute.2": "Suspenseful",
+   "Attribute.3": ""
+ },
+ {
+   "Title": "Dreamland",
+   "Author": "Sam Quinones",
+   "Attribute.1": "Informative",
+   "Attribute.2": "Saddening",
+   "Attribute.3": "Detailed"
+ },
+ {
+   "Title": "The Great Gatsby",
+   "Author": "Scott Fitzgerald",
+   "Attribute.1": "Thoughtful",
+   "Attribute.2": "Tragic",
+   "Attribute.3": ""
+ }
+]')
+writeLines(vec.json)
+```
+
+
+```{r}
+lst.json = fromJSON(vec.json)
+do.call(rbind, lst.json) %>% kable() %>%  kable_styling(bootstrap_options = "basic")
+```
+
+
+# Takeaways
+
+* The HTML and XML formats populated the table with `NA` values
+* The JSON formats preserved the blank cells
+

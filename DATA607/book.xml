@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<bookstore>
+  <book>
+    <title>And Then There Were None</title>
+    <Author>Agatha Christie</Author>
+    <Attribute.1>Thrilling</Attribute.1>
+    <Attribute.2>Suspenseful</Attribute.2>
+  </book>
+  <book>
+    <title>Dreamland</title>
+    <Author>Sam Quinones</Author>
+    <Attribute.1>Informative</Attribute.1>
+    <Attribute.2>Saddening</Attribute.2>
+    <Attribute.3>Detailed</Attribute.3>
+  </book>
+  <book>
+    <title>The Great Gatsby</title>
+    <Author>Scott Fitzgerald</Author>
+    <Attribute.1>Thoughtful</Attribute.1>
+    <Attribute.2>Tragic</Attribute.2>
+  </book>
+</bookstore>

@@ -1,0 +1,23 @@
+[
+ {
+   "Title": "And Then There Were None",
+   "Author": "Agatha Christie",
+   "Attribute.1": "Thrilling",
+   "Attribute.2": "Suspenseful",
+   "Attribute.3": ""
+ },
+ {
+   "Title": "Dreamland",
+   "Author": "Sam Quinones",
+   "Attribute.1": "Informative",
+   "Attribute.2": "Saddening",
+   "Attribute.3": "Detailed"
+ },
+ {
+   "Title": "The Great Gatsby",
+   "Author": "Scott Fitzgerald",
+   "Attribute.1": "Thoughtful",
+   "Attribute.2": "Tragic",
+   "Attribute.3": ""
+ }
+]
