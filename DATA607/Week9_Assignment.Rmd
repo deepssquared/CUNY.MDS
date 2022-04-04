@@ -1,0 +1,161 @@
+---
+title: "Week 9"
+output:
+  html_document:
+    toc: true
+    toc_float: yes
+    theme: lumen
+---
+
+
+```{r, echo = F, warning = F, message=F}
+library(ggplot2)
+library(data.table)
+library(httr)
+library(jsonlite)
+library(tidyverse)
+library(kableExtra)
+library(knitr)
+library(wordcloud)
+library(tidytext)
+library(RColorBrewer)
+library(ggalluvial)
+library(ggthemes)
+library(plotly)
+```
+
+
+```{r, echo=F, warning=F}
+api_key = 'oKYSZMayLHUTGDRzQPtSCuhgjyxKR2ht'
+secret_api = 'IUVmeyVoDGC9sEoB'
+```
+
+# Research Question
+
+For this assignment, we'll be using the NYTimes API key to obtain data on the top emailed NYTimes articles (for time intervals of 7 and 30 days). We will then compare that data to Facebook engagement to answer our primary question: **How do emailed articles compare with Facebook engagement?**
+
+# Preparing Data
+
+## JSON Data Import
+
+Here we'll import the data into a list:
+```{r}
+method = c("emailed", "shared")
+vec.days = c("7", "30")
+
+lst.data = list()
+for (i in vec.days) {
+  json = paste0('https://api.nytimes.com/svc/mostpopular/v2/shared/',i, "/facebook.json?api-key=",api_key)
+  lst.data[[paste0("facebook.", i)]] = jsonlite::fromJSON(json) 
+  json = paste0('https://api.nytimes.com/svc/mostpopular/v2/emailed/',i, ".json?api-key=",api_key)
+  lst.data[[paste0("emailed.", i)]]  = jsonlite::fromJSON(json)
+}
+
+```
+
+## R DataFrame
+The `results` portion of the JSON file will be of interest here. We'll use another loop to convert the data to data frames:
+
+```{r}
+lst.data.tables = list()
+for (i in 1:length(lst.data)) {
+  lst.data.tables[[names(lst.data)[i]]] = lst.data[[i]]$results %>% as.data.table()
+}
+```
+
+And we can preview them here:
+
+```{r}
+  lst.data.tables$facebook.7[, 1:6] %>% head(2) %>% kable() %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  lst.data.tables$facebook.30[, 1:6] %>% head(2) %>% kable() %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  
+  lst.data.tables$emailed.7[, 1:6] %>% head(2) %>% kable() %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+  lst.data.tables$emailed.30[, 1:6] %>% head(2) %>% kable() %>% kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+
+```
+
+# Data Analysis: Word Clouds
+
+We can start with some basic word clouds:
+
+## Shared on Facebook (7 Days)
+
+```{r, warning = F, message=F}
+data(stop_words)
+
+fb.words <-   lst.data.tables$facebook.7%>% unnest_tokens(word, title) %>% select(word)
+dt.fb.7 = fb.words[,.N, by = "word"][order(N, decreasing= T)]
+dt.fb.7 = dt.fb.7[!(word %in% stop_words$word),]
+wordcloud(words = dt.fb.7$word, freq = dt.fb.7$N, min.freq = 1, max.words=200, random.order=FALSE, rot.per=0.35, colors = brewer.pal(8, "Dark2"))
+```
+
+## Shared on Facebook (30 Days)
+
+```{r, warning = F, message=F}
+data(stop_words)
+
+fb.words <-   lst.data.tables$facebook.30%>% unnest_tokens(word, title) %>% select(word)
+dt.fb.7 = fb.words[,.N, by = "word"][order(N, decreasing= T)]
+dt.fb.7 = dt.fb.7[!(word %in% stop_words$word),]
+wordcloud(words = dt.fb.7$word, freq = dt.fb.7$N, min.freq = 1, max.words=200, random.order=FALSE, rot.per=0.35, colors = brewer.pal(8, "Dark2"))
+```
+
+## Emailed (7 Days)
+
+```{r, warning = F, message=F}
+data(stop_words)
+
+fb.words <-   lst.data.tables$emailed.7%>% unnest_tokens(word, title) %>% select(word)
+dt.fb.7 = fb.words[,.N, by = "word"][order(N, decreasing= T)]
+dt.fb.7 = dt.fb.7[!(word %in% stop_words$word),]
+wordcloud(words = dt.fb.7$word, freq = dt.fb.7$N, min.freq = 1, max.words=200, random.order=FALSE, rot.per=0.35, colors = brewer.pal(8, "Dark2"))
+```
+
+## Emailed (30 Days)
+
+```{r, warning = F, message=F}
+data(stop_words)
+
+fb.words <-   lst.data.tables$emailed.30%>% unnest_tokens(word, title) %>% select(word)
+dt.fb.7 = fb.words[,.N, by = "word"][order(N, decreasing= T)]
+dt.fb.7 = dt.fb.7[!(word %in% stop_words$word),]
+wordcloud(words = dt.fb.7$word, freq = dt.fb.7$N, min.freq = 1, max.words=200, random.order=FALSE, rot.per=0.35, colors = brewer.pal(8, "Dark2"))
+```
+
+# Data Analysis: Alluvial Plots
+
+The next step will be directly comparing article categories between mediums (Facebook/Email) between time periods
+## Facebook vs Email 
+```{r, warning = F, message=F}
+dt.30days = merge(lst.data.tables$emailed.30[,.N, by = .(section)], lst.data.tables$facebook.30[,.N, by = .(section)], by = "section", all.x = T, all.y = T)
+
+dt.7days = merge(lst.data.tables$emailed.7[,.N, by = .(section)], lst.data.tables$facebook.7[,.N, by = .(section)], by = "section", all.x = T, all.y = T)
+
+dt.alluvial = merge(dt.30days, dt.7days, by = "section")
+
+setnames(dt.alluvial, c("N.x.x", "N.y.x", "N.x.y", "N.y.y"), c("Email_30", "FB_30", "Email_7", "FB_7"))
+mlt.alluvial = melt(dt.alluvial)
+mlt.alluvial[is.na(value), value := 0]
+
+ggplot(data = mlt.alluvial[grepl("30", variable)],
+       aes(x = variable, stratum = section, alluvium = section,
+           y = value, label = section)) +
+  geom_alluvium(aes(fill = section)) +
+  geom_stratum() + geom_text(stat = "stratum") +
+  labs(x = "Medium/Days", y = "Frequency", title = "(30 Days) Titles") + scale_fill_manual(values = brewer.pal(8, "Dark2")) + theme_minimal()
+ 
+ggplot(data = mlt.alluvial[grepl("7", variable)],
+       aes(x = variable, stratum = section, alluvium = section,
+           y = value, label = section)) +
+  geom_alluvium(aes(fill = section)) +
+  geom_stratum() + geom_text(stat = "stratum") +
+  labs(x = "Medium/Days", y = "Frequency", title = "(7 Days) Titles") + scale_fill_manual(values = brewer.pal(8, "Dark2")) + theme_minimal() 
+
+```
+
+# Conclusions
+
+1. On **Facebook**, the Academy Award fiasco got more traction (last 7 days). 
+2. Both **COVID-19** and **Russia** got traction via email and Facebook
+3. Putin headlines got more traction via emailed articles.
+4. Facebook has less opinion articles shared but had more content on world headlines.
