@@ -26,8 +26,6 @@ library(plotly)
 
 
 ```{r, echo=F, warning=F}
-api_key = 'oKYSZMayLHUTGDRzQPtSCuhgjyxKR2ht'
-secret_api = 'IUVmeyVoDGC9sEoB'
 ```
 
 # Research Question
