@@ -1,0 +1,287 @@
+---
+title: "Assignment 10"
+output:
+  html_document:
+    toc: true
+    toc_float: yes
+    theme: lumen
+---
+```{r warning = F, message=F}
+library(topicmodels)
+library(rvest)
+library(tm)
+library(SnowballC)
+library(wordcloud)
+library(RColorBrewer)
+library(ggplot2)
+library(tidyverse)
+library(janitor)
+library(maps)
+library(ggthemes)
+library(tidytext)
+library(textdata)
+```
+
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
+
+# Part I: Textbook Assignment
+
+* Re-create and analyze primary code from the textbook.
+* Provide citation to text book, using a standard citation syntax like APA or MLA.
+
+For this section, I'll be using the `janeausten` package and replicating the example from the textbook:
+```{r}
+library(janeaustenr)
+library(dplyr)
+library(stringr)
+
+tidy_books <- austen_books() %>%
+  group_by(book) %>%
+  mutate(
+    linenumber = row_number(),
+    chapter = cumsum(str_detect(text, 
+                                regex("^chapter [\\divxlc]", 
+                                      ignore_case = TRUE)))) %>%
+  ungroup() %>%
+  unnest_tokens(word, text)
+
+head(tidy_books, 5) %>% knitr::kable()
+```
+
+Essentially, the book is tokenized here, providing us with every single word of the book.  The next step will be joining our data with the `nrc` lexicon:
+
+```{r}
+nrc_joy <- get_sentiments("nrc") %>% 
+  filter(sentiment == "joy")
+
+tidy_books %>%
+  filter(book == "Emma") %>%
+  inner_join(nrc_joy) %>%
+  count(word, sort = TRUE)
+```
+
+Here we have a tabulation of terms (not verbatim). From here, we can tabulate the sentiments and visualize accordingly:
+```{r}
+
+jane_austen_sentiment <- tidy_books %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(book, index = linenumber %/% 80, sentiment) %>%
+  pivot_wider(names_from = sentiment, values_from = n, values_fill = 0) %>% 
+  mutate(sentiment = positive - negative)
+
+ggplot(jane_austen_sentiment, aes(index, sentiment, fill = book)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~book, ncol = 2, scales = "free_x")
+```
+
+The primary code also does a lexicon comparison:
+```{r}
+pride_prejudice <- tidy_books %>%
+  filter(book == "Pride & Prejudice")
+
+afinn <- pride_prejudice %>%
+  inner_join(get_sentiments("afinn")) %>%
+  group_by(index = linenumber %/% 80) %>%
+  summarise(sentiment = sum(value)) %>%
+  mutate(method = "AFINN")
+
+bing_and_nrc <- bind_rows(
+  pride_prejudice %>%
+    inner_join(get_sentiments("bing")) %>%
+    mutate(method = "Bing et al."),
+  pride_prejudice %>%
+    inner_join(get_sentiments("nrc") %>%
+      filter(sentiment %in% c(
+        "positive",
+        "negative"
+      ))) %>%
+    mutate(method = "NRC")
+) %>%
+  count(method, index = linenumber %/% 80, sentiment) %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative)
+
+bind_rows(
+  afinn,
+  bing_and_nrc
+) %>%
+  ggplot(aes(index, sentiment, fill = method)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~method, ncol = 1, scales = "free_y") +
+  labs(title = "Sentiment Analysis of Pride and Prejudice")
+```
+
+Next, we'll visualize using a wordcloud:
+
+```{r}
+
+tidy_books %>%
+  anti_join(stop_words) %>%
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 80))
+
+tidy_books %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  reshape2::acast(word ~ sentiment, value.var = "n", fill = 0) %>%
+  comparison.cloud(
+    colors = c("green", "purple"),
+    max.words = 80
+  )
+```
+
+The last step is aggregating sentences and attributing respective sentiments. We can see the ratio of negative to positive words per section:
+
+```{r}
+p_and_p_sentences <- tibble(text = prideprejudice) %>% 
+  unnest_tokens(sentence, text, token = "sentences")
+austen_chapters <- austen_books() %>%
+  group_by(book) %>%
+  unnest_tokens(chapter, text, token = "regex", 
+                pattern = "Chapter|CHAPTER [\\dIVXLC]") %>%
+  ungroup()
+
+bingnegative <- get_sentiments("bing") %>% 
+  filter(sentiment == "negative")
+
+wordcounts <- tidy_books %>%
+  group_by(book, chapter) %>%
+  summarize(words = n())
+
+tidy_books %>%
+  semi_join(bingnegative) %>%
+  group_by(book, chapter) %>%
+  summarize(negativewords = n()) %>%
+  left_join(wordcounts, by = c("book", "chapter")) %>%
+  mutate(ratio = negativewords/words) %>%
+  filter(chapter != 0) %>%
+  slice_max(ratio, n = 1) %>% 
+  ungroup() %>% 
+  knitr::kable()
+```
+
+### References
+Silge, Julia, and David Robinson, Text Mining with R: A Tidy Approach, O’Reilly Media, 2020. https://www.tidytextmining.com/
+
+
+# Part II: Original Example
+For this assignment, I'll be using tweets from the hashtag `#whyIdidntreport`. This hashtag trended around the confirmation of Justice Kavannaugh to the Supreme Court. I scraped the data and will be performing a sentiment analysis using the `nrc` lexicon. This will provide more details on the terms used. 
+
+## Importing Tweets into a DataFrame
+```{r message=F}
+webpage <- read_html("tweet.html")
+table <- html_table(webpage, fill = TRUE, header=TRUE)
+# colnames(table) =  table[[1]]
+
+data <-table[[1]]
+
+colnames(data) = make_clean_names(colnames(data))
+head(data, 2) %>% knitr::kable() %>% kableExtra::kable_styling()
+```
+
+## Subset to Original Tweets
+There's quite a bit of information here, so we'll restrict this to the tweets
+```{r message=F}
+tweets <- subset(data, tweet_type == "Tweet")
+```
+
+## Text mining of tweets
+We'll start by previewing some of the tweets
+```{r message=F}
+tweet_text <- Corpus(VectorSource(tweets$tweet))
+(inspect(tweet_text[1:3]))
+```
+
+## Removing special characters
+From here, we'll clean the text of spaces and unnecessary characters
+
+```{r message=F, warning = F}
+toSpace <- content_transformer(function (x , pattern ) gsub(pattern, " ", x))
+tweet_text2 <- tm_map(tweet_text, toSpace, "/")
+tweet_text2 <- tm_map(tweet_text, toSpace, "@")
+tweet_text2 <- tm_map(tweet_text, toSpace, "\\|")
+```
+
+## Text Cleaning
+Here, we'll transform the tweets into corpus objects
+```{r message=F, warning = F}
+## Convert the text to lower case
+docs <- tm_map(tweet_text2, content_transformer(tolower))
+## Remove numbers
+tweet_text2 <- tm_map(tweet_text2, removeNumbers)
+## Remove english common stopwords
+tweet_text2 <- tm_map(tweet_text2, removeWords, stopwords("english"))
+## specify your stopwords as a character vector
+tweet_text2 <- tm_map(tweet_text2, removeWords, c("I", "my", "because")) 
+## Remove punctuations
+tweet_text2 <- tm_map(tweet_text2, removePunctuation)
+## Eliminate extra white spaces
+tweet_text2 <- tm_map(tweet_text2, stripWhitespace)
+```
+
+## Topic Analysis
+We can also separate the tweets by topic:
+```{r message=F}
+dtm <- DocumentTermMatrix(tweet_text2)
+dtm <- removeSparseTerms(dtm, 0.99)
+ldaOut <-LDA(dtm, k = 4)
+topics <-terms(ldaOut,6)
+head(topics, 2) %>% knitr::kable()
+```
+
+## Document Matrix
+The next step is a document matrix which sorts words by frequency
+```{r message=F}
+tweets_matrix <- TermDocumentMatrix(tweet_text2)
+m <- as.matrix(tweets_matrix)
+v <- sort(rowSums(m),decreasing=TRUE)
+doc_matrix <- data.frame(word = names(v),freq=v)
+```
+
+## Building the Word Chart
+Here we'll plot the word frequencies:
+
+```{r}
+graph = ggplot(data = doc_matrix[8:30,], aes(reorder(word, -freq), freq)) + geom_bar(stat = "identity", fill = "lightblue", color = "black") + labs( title ="Most frequent words", x = "Word", y = "Word frequencies") + theme_minimal() + theme(axis.text.x=element_text(angle=90))
+plot(graph)
+```
+
+## Building the Word Cloud
+
+We can preview term frequency using a wordcloud:
+
+```{r}
+wordcloud <- wordcloud(words = setdiff(doc_matrix$word, c("whyididntreport", "because")), freq = doc_matrix$freq, min.freq = 1,
+          max.words=50, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+```
+
+## Sentiment Analysis
+Here we'll use the `nrc` lexicon and visualize the top sentiments:
+
+```{r, message = FALSE}
+
+nrc_sent <- get_sentiments("nrc")
+# bing_sent <-get_sentiments("bing")
+#affin_sent <-get_sentiments("afinn")
+
+tweet_nrc_sent <- doc_matrix %>%
+  inner_join(nrc_sent, by=c("word")) 
+
+#tweet_bing_sent <- doc_matrix %>% inner_join(bing_sent, by=c("word"))
+
+# tweet_affin_sent <- doc_matrix %>% inner_join(affin_sent, by=c("word"))
+
+tweet_nrc_sum <- tweet_nrc_sent %>%
+  select(sentiment, freq) %>% 
+  group_by(sentiment) %>%
+  rename (count = freq) %>%
+  summarise(n = sum(count)) %>% arrange(n) %>% filter(sentiment != "negative" & sentiment != "positive")
+
+ tweet_nrc_sum %>% ggplot(aes(reorder(sentiment, -n), n, fill = n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip() + theme_clean()
+```
