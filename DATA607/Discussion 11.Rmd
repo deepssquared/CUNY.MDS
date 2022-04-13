@@ -1,0 +1,31 @@
+---
+title: "Discussion 11"
+output: html_document
+---
+
+## Recommender System
+
+The recommender system of interest is the Disease Prediction and Doctor Recommendation System by Gujar et al (2018) (https://www.irjet.net/archives/V5/i3/IRJET-V5I3756.pdf)
+
+## Scenario Design:
+
+1. The target users here are *clinicians* who can use the results of this modeling approach to adjust care if needed.
+2. The key goals here are to *extract information efficiently* and *invoke preventive measures* if patients are at risk for specific medical outcomes
+3. Accomplishing these goals requires a front-end system where physicians can enter data, a back-end system where analysts can query data from the EHR, and training the algorithm to reduce error.
+
+It would make sense to perform the scenario design twice: information should be in lay terms for patients and more granular for clinicians.
+
+## Reverse Engineering:
+
+The work flow is provided in the paper, but the scenario here would be as follows:
+
+1. Input data: tracker devices, self-reported questionnaires and biomarkers. Also factoring in data collected at external institutions
+2. Data parsing: normalizing biomarker data, imputing and predicting missing data, adjusting for potential biases, accounting for loss to follow up. Using NLP tools to tokenize phrases
+3. Building a model that produces likelihood probabilities (Naive Bayes is cited here)
+4. Producing a respective output
+
+
+## Recommendations
+
+This recommendation system needs to support longitudinal modeling, as many of these biomarkers are dynamic. There also needs to be some acknowledgement or variable of underlying biological factors that may play a part here.
+
