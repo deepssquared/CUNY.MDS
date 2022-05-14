@@ -1,0 +1,197 @@
+---
+title: "Final Project"
+subtitle: 'The opioid epidemic in surveillance & survey data'
+output:
+  html_document:
+    toc: true
+    toc_float: yes
+    theme: lumen
+
+---
+
+```{r, echo = F, warning = F, message = F}
+dir.home = "~/git/CUNY.MDS/DATA607"
+dir.NHANES = file.path(dir.home, "NHANES")
+setwd(dir.home)
+```
+
+```{r, echo = F, warning = F, message = F}
+library(data.table)
+library(ggplot2)
+library(caret)
+library(plotly)
+library(ggthemes)
+library(foreign)
+library(tidyverse)
+library(urbnmapr)
+library(ggthemes)
+library(knitr)
+library(kableExtra)
+library(ggpubr)
+```
+
+# Introduction
+
+Hospital records and survey data are both key resources when tabulating public health metrics. However, the question remains whether self-reported surveys reflect the reality of current disease burdens. For this project, I'll be comparing the **NHANES** dataset (containing survey data) with the **SPARCS** dataset, containing surveillance hospitalization data in the state of New York. The health outcome of interest is opioid-dependence annd whether age differs between prescription and illicit opioid use.
+
+# Data Science Workflow
+
+1. **Data Import**: for this project, I'll be using two data sources. The Statewide Planning and Research Cooperative System (SPARCS) dataset collects patient level detail on patient characteristics, diagnoses and treatments, services, and charges for every hospital discharge. I'll be obtaining this data using an API query. I'll also be using the NHANES dataset via a CSV import.
+2. **Data Transformation**: in addition to subsetting and transforming the data structure, I'll be binning the age categories so that we can compare the datasets in more detail
+3. **Visualizations + Analysis**:  For this project, I'll be answering this question: how do the traits of folks prescribed opioids vary (if at all) from those hospitalizd for opioid misuse?
+
+# Part 1: Data Import
+
+## SPARCS Data Import
+Here we can preview the SPARCS (surveillance) data. I queried this using an API token. This totals to 16k hospitalizations:
+```{r, warning = F, message = F}
+app.token = 'B8MOgX9ChGjrpoBEzo4Kdmqpt'
+inpatient.2016 = 'https://health.data.ny.gov/resource/gnzp-ekau.csv'
+
+x = paste0(inpatient.2016, '?apr_drg_code=773&$limit=100000&$$app_token=', app.token)
+dt.sparcs = read.csv(url(x))
+dt.sparcs = as.data.table(dt.sparcs)
+dt.sparcs[, 1:5] %>% head() %>%  kable() %>% kableExtra::kable_styling()
+
+# http://health.data.ny.gov/resource/xdss-u53e.csv?$limit=5000&$$app_token=YOURAPPTOKENHERE
+```
+
+## NHANES Data Import
+For NHANES, we'll be reading these into CSV format and importing multiple tables:
+
+```{r, warning = F, message = F}
+dt.hsq = read.xport(file.path(dir.NHANES, 'HSQ_I.XPT')) %>% as.data.table()
+dt.demo.NHANES = read.xport(file.path(dir.NHANES, 'DEMO_I.XPT'))  %>% as.data.table()
+dt.drugs.NHANES = read.xport(file.path(dir.NHANES, "RXQ_RX_I.XPT"))  %>% as.data.table()
+dt.drug.info.NHANES = read.xport(file.path(dir.NHANES, "RXQ_DRUG.xpt"))  %>% as.data.table()
+dt.drugs.NHANES[,1:5] %>% head() %>% kable() %>% kableExtra::kable_styling()
+```
+
+### NHANES Data Integration
+
+One aspect to bear in mind here is that the NHANES dataset has multiple one-to-many relationships. The demographics table contains information on participants, but participants can have multiple drug orderes. The drug information table (similarly) has core information per drug but can be joined to multiple drug orders.
+
+Here, the demographic and drug order data has a one-to-many relationship:
+
+```{r, warning = F, message = F}
+dt.demo.drugs.merged = merge(dt.demo.NHANES, dt.drugs.NHANES, by = 'SEQN')
+dt.demo.drugs.merged[1:5,1:5] %>% head() %>% kable() %>% kableExtra::kable_styling()
+```
+
+Similarly, we can merge the drug orders to the drug metadata and visualize accordingly: 
+```{r, warning = F, message = F}
+dt.drugs.NHANES.merged = merge(dt.drugs.NHANES, dt.drug.info.NHANES, by = 'RXDDRGID')
+dt.drugs.NHANES.merged[1:5, 1:7] %>% head() %>% kable() %>% kableExtra::kable_styling()
+```
+
+# Part 2: Data Wrangling
+
+## Data Subset 
+From the API query, we've subsetted based on opioid-misuse. We'll need to subset the NHANES dataset to only contain folks who use opioids (via the drug names "oxycodone" and "fentanyl":
+
+```{r, warning = F, message = F}
+dt.drugs.NHANES.sub = dt.drugs.NHANES[grepl("oxycodone|fentanyl", RXDDRUG, ignore.case = T)]
+vec.NHANES.ids = dt.drugs.NHANES.sub[, SEQN]
+```
+
+From here, we'll subset all the NHANES datasets with these ids (N = 72):
+
+```{r, warning = F, message = F}
+dt.demo.NHANES.sub = dt.demo.NHANES[SEQN %in% vec.NHANES.ids]
+dt.hsq.sub = dt.hsq[SEQN %in% vec.NHANES.ids]
+```
+
+
+## Age Transformation
+Here I'll convert a continuous value (age) to a binned category. The SPARCS dataset has age categories as follows:
+
+```{r, warning = F, message = F}
+dt.sparcs[,.N, by = 'age_group'] %>% kable() %>% kableExtra::kable_styling()
+```
+
+Therefore, we'll apply this to the demographics table of the NHANES dataset:
+```{r, warning = F, message = F}
+dt.demo.NHANES.sub[, age_group := cut(RIDAGEYR, c(0, 17, 29, 49, 69, 100), labels = c("0 to 17", "18 to 29", "30 to 49", "50 to 69", "70 or Older"), right = T)]
+dt.demo.NHANES.sub[,.N, by = 'age_group'] %>% kable() %>% kableExtra::kable_styling()
+```
+
+# Part 3: Visualizations
+
+## Validation Visualizations
+
+### New Feature not in class: GIS
+One key feature of surveillance data is geographical information. We can use this when mapping the opioid misuse (via the `urbnmapr` package):
+
+```{r}
+dt.counties = (counties)
+dt.counties = as.data.table(dt.counties)
+dt.counties = dt.counties[state_name == 'New York']
+dt.counties$county_name = gsub('\\s*County', '', dt.counties$county_name)
+
+#dt.fips = fread('fips.txt')
+#dt.fips  = dt.fips[grepl('^36', `FIPS code`)]
+#dt.fips[name == 'New York', name := "Manhattan"]
+
+dt.sparcs.N = dt.sparcs[type_of_admission == 'Emergency',.N, by = "hospital_county"]
+setnames(dt.sparcs.N, "hospital_county", "county_name")
+dt.sparcs.N[county_name == 'St Lawrence', county_name := 'St. Lawrence']
+dt.sparcs.N[county_name == 'Manhattan', county_name := 'New York']
+
+dt.emergency.dat = merge(dt.sparcs.N, dt.counties, by = 'county_name', all.y = T)
+
+dt.emergency.dat %>%
+  ggplot(aes(long, lat, group = group, fill = N)) +
+  geom_polygon(color = NA) +
+  coord_map(projection = "albers", lat0 = 39, lat1 = 45) +
+  labs(title  = "Number of Emergency Visits due to Opioid Use") + scale_fill_viridis_b() + theme(legend.position = 'bottom') + theme_minimal() 
+
+```
+
+While a good portion of the cases are located Downstate, there are two glaring counties in Upstate (Erie and Suffolk) with significant case counts.
+
+### Validation Statistics with Age
+
+It's worth exploring if age is normally distributed among individuals prescribed opioids (my guess is no). But we can test this using a skewdness test (`shapiro.test`):
+
+```{r}
+shapiro.test(dt.demo.NHANES.sub$RIDAGEYR)
+```
+
+This confirms that age is skewed (most likely skewed-left).
+
+## Hypothesis: Age Distribution 
+
+Many attribute opioid use disorder with youth; we can compare the age distributions between folks with prescriptions and hospitalizations to verify this.
+
+### Visualization
+
+The next step is visualizing the age distributions between hospitalizations and individuals with prescription opioids:
+```{r, warning=F}
+dt.demo.NHANES.sub.N = dt.demo.NHANES.sub[,.N, by = 'age_group']
+hist.NHANES = ggplot(data = dt.demo.NHANES.sub.N[!is.na(age_group)], aes(age_group, N, fill = factor(age_group))) + geom_bar(stat = 'identity') + theme_minimal() + labs(x = "Age Group", y = "Count", title = "NHANES Age Groups") + scale_fill_tableau()
+
+dt.sparcs.AGE.N  = dt.sparcs[,.N, by = 'age_group']
+dt.sparcs.AGE.N[, age_group := factor(age_group, levels =  c("0 to 17", "18 to 29", "30 to 49", "50 to 69", "70 or Older"))]
+hist.SPARCS = ggplot(data = dt.sparcs.AGE.N, aes(age_group, N, fill = factor(age_group))) + geom_bar(stat = 'identity') + theme_minimal() + labs(x = "Age Group", y = "Count", title = "SPARCS Age Groups") + scale_fill_tableau()
+
+ggarrange(hist.NHANES, hist.SPARCS, ncol = 1, common.legend = T)
+```
+
+There's a **KEY** takeaway here: just by eyeballing we can tell that folks 50-69 are most likely to be prescribed opioids but individuals in the 30-49 age bucket are most likely to be hospitalized for opioid misuse. We'll use our statistical tests to confirm this.
+
+### Age Distribution Analysis:
+
+If we want to compare the age distributions between the two datasets, we can use a simple Chi-Squared test:
+
+```{r}
+dt.cont.tbl = rbind(dt.sparcs[,.(age_group, Data = 'SPARCS')], dt.demo.NHANES.sub[,.(age_group, Data = 'NHANES')])
+chisq.test(dt.cont.tbl$age_group, dt.cont.tbl$Data)
+```
+
+As the distributions indicated, there's a significant difference in age demographics of those prescribed opioids compared to those who are hospitalized for an overdose.
+
+# Key Takeaways:
+
+1. Individuals who are prescribed opioids tend to be older compared to folks who are hospitalized for overdosing. This suggests at illicit drug use or potential gaps in patient/provider relationships.
+2. New York State overdose counts skew toward downstate but notable counties in upstate also have an increased case burden.
+3. Future analyses could include longitudinal visualizations on a per-county basis and examining specific drivers and risk factors toward overdosing. 
