@@ -1,0 +1,92 @@
+---
+title: "HW 1"
+author: "Deepika Dilip"
+date: "9/1/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(animation)
+```
+
+
+```{r cars}
+x=c(rep(0,500),seq(0,1,length.out=1000), rep(1,500))
+y=c(seq(-1,1,length.out=500),rep(0,1000), seq(-1,1,length.out=500))
+z=rbind(x,y)
+plot(y~x, xlim=c(-3,3), ylim=c(-3,3))
+
+```
+
+```{r}
+x=c(rep(0,500),seq(0,1,length.out=1000), rep(1,500))
+circle_y = c(sqrt(1- x**2), -1*sqrt(1- x**2))
+x_0 = c(rep(0, 1000))
+y_0 = seq(-1, 1, length.out = 1000)
+x_D = c(x, x, x_0)
+y_D = c(circle_y , y_0)
+mat_D = cbind(x_D, y_D)
+plot(y_D~ x_D ,xlim=c(-3,3), ylim=c(-3,3))
+```
+
+
+# Scaling
+```{r}
+ani.record(reset = TRUE)  # clear history before recording
+
+for (i in seq(0, 2, length.out = 10)) {
+  mat_new = mat_D %*% matrix(c(i, 0, 0, i), nrow = 2)
+  plot(c(mat_new[,2])~ c(mat_new[,1]) ,xlim=c(-3,3), ylim=c(-3,3))
+  ani.record()  # record the current frame
+}
+
+oopts = ani.options(interval = 0.5)
+ani.replay()
+
+```
+
+
+
+# Shearing
+```{r}
+ani.record(reset = TRUE)  # clear history before recording
+
+for (i in seq(0, 2, length.out = 10)) {
+  mat_new = mat_D %*% matrix(c(1, 0, (i), 1), nrow = 2)
+  plot(c(mat_new[,2])~ c(mat_new[,1]) ,xlim=c(-3,3), ylim=c(-3,3))
+  ani.record()  # record the current frame
+}
+
+```
+
+
+
+# Rotation
+```{r}
+ani.record(reset = TRUE)  # clear history before recording
+
+for (i in seq(-pi, pi, length.out = 10)) {
+  mat_new = mat_D %*% matrix(c(cos(i), sin(i), -sin(i), cos(i)), nrow = 2)
+  plot(c(mat_new[,2])~ c(mat_new[,1]) ,xlim=c(-3,3), ylim=c(-3,3))
+  ani.record()  # record the current frame
+}
+
+oopts = ani.options(interval = 0.5)
+ani.replay()
+```
+
+# Projection
+```{r}
+mat_projection = cbind(mat_D, rep(0, nrow(mat_D)))
+ani.record(reset = TRUE)  # clear history before recording
+
+for (i in seq(0, 2, length.out = 10)) {
+  mat_new = mat_projection %*% matrix(c(1, 0, 0, 0, cos(i),-sin(i),0,sin(i),cos(i)),nrow=3,ncol=3)
+  plot(c(mat_new[,2])~ c(mat_new[,1]) ,xlim=c(-3,3), ylim=c(-3,3))
+  ani.record()  # record the current frame
+}
+
+oopts = ani.options(interval = 0.5)
+ani.replay()
+
+```
