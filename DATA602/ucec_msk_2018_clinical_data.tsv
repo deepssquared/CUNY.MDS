@@ -1,0 +1,198 @@
+Study ID	Patient ID	Sample ID	Cancer Type	Cancer Type Detailed	Fraction Genome Altered	Neoplasm Histologic Grade	IHC Detail	MMR-D by IHC	MSI Status	Mutation Count	Oncotree Code	First-Line Therapy PFS	POLE ultra-mutated	Progression Status	Number of Samples Per Patient	SCNA Cluster	Sex	Somatic Status	TMB (nonsynonymous)
+ucec_msk_2018	P-0000024	P-0000024-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.3878	1	NA	N	MSS	6	UEC	186.4	N	1	1	B	Female	Matched	6.65493180359
+ucec_msk_2018	P-0000025	P-0000025-T01-IM3	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0000	3	NA	N	MSS	1	USC	25.73	N	1	2	A	Female	Matched	1.1091553006
+ucec_msk_2018	P-0000025	P-0000025-T02-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.1020	3	NA	NA	MSS	2	USC	25.73	N	1	2	A	Female	Matched	1.95743939523
+ucec_msk_2018	P-0000026	P-0000026-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.4196	3	NA	not done	MSS	4	UEC	11.97	N	1	1	A	Female	Matched	4.43662120239
+ucec_msk_2018	P-0000055	P-0000055-T01-IM3	Endometrial Cancer	Uterine Clear Cell Carcinoma	0.4203	3	NA	not done	MSS	6	UCCC	27.87	N	1	1	A	Female	Matched	6.65493180359
+ucec_msk_2018	P-0000060	P-0000060-T01-IM3	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.3772	3	NA	not done	MSS	6	USC	10.27	N	1	1	A	Female	Matched	6.65493180359
+ucec_msk_2018	P-0000061	P-0000061-T01-IM3	Endometrial Cancer	Uterine Clear Cell Carcinoma	0.0377	3	NA	N	MSS	3	UCCC	8.13	N	1	1	C	Female	Matched	3.32746590179
+ucec_msk_2018	P-0000064	P-0000064-T02-IM3	Endometrial Cancer	Uterine Clear Cell Carcinoma	0.6088	3	NA	N	MSS	6	UCCC	19.97	N	1	1	C	Female	Matched	6.65493180359
+ucec_msk_2018	P-0000069	P-0000069-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0010	2	NA	not done	MSI-H	19	UEC	29.6	N	1	1	NA	Female	Matched	21.0739507114
+ucec_msk_2018	P-0000080	P-0000080-T01-IM3	Endometrial Cancer	Uterine Undifferentiated Carcinoma	0.3279	3	NA	not done	MSS	4	UUC	4.8	N	1	1	A	Female	Matched	4.43662120239
+ucec_msk_2018	P-0000105	P-0000105-T01-IM3	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.1358	3	NA	not done	MSS	6	USC	24.77	N	1	1	A	Female	Matched	6.65493180359
+ucec_msk_2018	P-0000135	P-0000135-T01-IM3	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.3074	3	NA	not done	MSS	6	UCS	11.23	N	1	1	A	Female	Matched	6.65493180359
+ucec_msk_2018	P-0000145	P-0000145-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0082	3	NA	N	MSS	2	UEC	10.5	N	1	1	C	Female	Matched	2.2183106012
+ucec_msk_2018	P-0000156	P-0000156-T01-IM3	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.5457	3	NA	not done	MSS	3	USC	9.6	N	1	1	C	Female	Matched	3.32746590179
+ucec_msk_2018	P-0000157	P-0000157-T01-IM3	Endometrial Cancer	Uterine Mixed Endometrial Carcinoma	0.0004	3	loss of MLH1, PMS2; retained MSH2, MSH6	Y	MSI-indeterminate	35	UMEC	8.43	N	1	1	B	Female	Matched	38.8204355209
+ucec_msk_2018	P-0000193	P-0000193-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0997	2	NA	N	MSS	7	UEC	20.37	N	1	1	B	Female	Matched	7.76408710418
+ucec_msk_2018	P-0000230	P-0000230-T01-IM3	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0637	3	NA	not done	MSS	4	USC	45.17	N	1	1	C	Female	Matched	4.43662120239
+ucec_msk_2018	P-0000321	P-0000321-T02-IM3	Endometrial Cancer	Uterine Undifferentiated Carcinoma	0.3849	3	NA	N	MSS	6	UUC	36.43	N	1	1	A	Female	Matched	6.65493180359
+ucec_msk_2018	P-0000343	P-0000343-T01-IM3	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0087	3	NA	not done	MSS	4	USC	10.7	N	1	1	NA	Female	Matched	4.43662120239
+ucec_msk_2018	P-0000367	P-0000367-T01-IM3	Endometrial Cancer	Uterine Clear Cell Carcinoma	0.3920	3	NA	not done	MSS	3	UCCC	18.87	N	1	1	A	Female	Matched	3.32746590179
+ucec_msk_2018	P-0000404	P-0000404-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0001	2	NA	not done	MSS	7	UEC	24.77	N	1	1	A	Female	Matched	7.76408710418
+ucec_msk_2018	P-0000416	P-0000416-T01-IM3	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0352	3	NA	not done	MSS	3	USC	17.03	N	1	1	A	Female	Matched	3.32746590179
+ucec_msk_2018	P-0000448	P-0000448-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0828	2	loss of MSH6; retained MLH1, MSH2, PMS2	Y	MSI-H	75	UEC	3.3	N	1	1	C	Female	Matched	84.2958028454
+ucec_msk_2018	P-0000465	P-0000465-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.1333	2	NA	N	MSS	2	UEC	5.27	N	1	1	A	Female	Matched	2.2183106012
+ucec_msk_2018	P-0000558	P-0000558-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0001	1	loss of MLH1, PMS2; retained MSH2, MSH6	Y	MSI-H	26	UEC	13.37	N	1	1	C	Female	Matched	28.8380378155
+ucec_msk_2018	P-0000566	P-0000566-T01-IM3	Endometrial Cancer	Uterine Mixed Endometrial Carcinoma	0.0034	3	NA	N	MSS	4	UMEC	8.3	N	1	1	NA	Female	Matched	4.43662120239
+ucec_msk_2018	P-0000578	P-0000578-T01-IM3	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0207	3	NA	not done	MSS	1	USC	24.67	N	1	1	NA	Female	Matched	1.1091553006
+ucec_msk_2018	P-0000614	P-0000614-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0009	3	NA	not done	MSI-H	33	UEC	1.67	N	1	1	C	Female	Matched	36.6021249197
+ucec_msk_2018	P-0000698	P-0000698-T01-IM3	Endometrial Cancer	Uterine Mixed Endometrial Carcinoma	0.0124	3	NA	not done	MSS	4	UMEC	16	N	1	1	B	Female	Matched	4.43662120239
+ucec_msk_2018	P-0000780	P-0000780-T01-IM3	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.5732	3	NA	not done	MSI-indeterminate	2	UCS	12.5	N	1	1	A	Female	Matched	2.2183106012
+ucec_msk_2018	P-0000839	P-0000839-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0707	2	NA	not done	MSS	3	UEC	19.47	N	1	2	B	Female	Matched	3.32746590179
+ucec_msk_2018	P-0000839	P-0000839-T02-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.3855	2	NA	NA	MSS	2	UEC	19.47	N	1	2	B	Female	Matched	1.95743939523
+ucec_msk_2018	P-0000878	P-0000878-T01-IM3	Endometrial Cancer	Uterine Neuroendocrine Carcinoma	0.6881	3	NA	not done	MSS	3	UNEC	4.43	N	1	1	A	Female	Matched	3.32746590179
+ucec_msk_2018	P-0000952	P-0000952-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.2070	1	NA	not done	MSS	6	UEC	36.47	N	1	3	B	Female	Matched	6.65493180359
+ucec_msk_2018	P-0000952	P-0000952-T02-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.2124	1	NA	NA	MSS	6	UEC	36.47	N	1	3	B	Female	Matched	5.87231818569
+ucec_msk_2018	P-0000952	P-0000952-T03-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.2128	1	NA	NA	MSS	5	UEC	36.47	N	1	3	B	Female	Matched	4.89359848807
+ucec_msk_2018	P-0001005	P-0001005-T01-IM3	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0086	3	NA	not done	MSS	6	USC	10.4	N	1	1	C	Female	Matched	6.65493180359
+ucec_msk_2018	P-0001038	P-0001038-T01-IM3	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.6180	3	NA	not done	MSI-indeterminate	2	UCS	7.8	N	1	1	C	Female	Matched	2.2183106012
+ucec_msk_2018	P-0001044	P-0001044-T01-IM3	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.1552	3	NA	not done	MSS	6	UCS	27.63	N	1	1	A	Female	Matched	6.65493180359
+ucec_msk_2018	P-0001073	P-0001073-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.2610	2	NA	not done	MSI-indeterminate	10	UEC	10.7	N	1	1	NA	Female	Matched	11.091553006
+ucec_msk_2018	P-0001085	P-0001085-T01-IM3	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.7539	3	NA	not done	MSI-indeterminate	3	UCS	17.93	N	1	1	A	Female	Matched	3.32746590179
+ucec_msk_2018	P-0001094	P-0001094-T01-IM3	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0002	3	NA	N	MSS	4	USC	8.43	N	1	1	A	Female	Matched	4.43662120239
+ucec_msk_2018	P-0001115	P-0001115-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0678	2	loss of MLH1, PMS2; retained MSH2, MSH6	Y	MSI-H	60	UEC	59.23	N	1	1	B	Female	Matched	65.4401627353
+ucec_msk_2018	P-0001240	P-0001240-T01-IM3	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.2112	3	NA	not done	NA	12	USC	6.33	N	1	1	NA	Female	Matched	13.3098636072
+ucec_msk_2018	P-0001248	P-0001248-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0043	1	loss of MLH1, PMS2	Y	MSI-H	31	UEC	10.57	N	1	1	NA	Female	Matched	34.3838143185
+ucec_msk_2018	P-0001286	P-0001286-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0830	1	NA	not done	MSS	9	UEC	24.73	N	1	1	NA	Female	Matched	9.98239770538
+ucec_msk_2018	P-0001456	P-0001456-T01-IM3	Endometrial Cancer	Uterine Clear Cell Carcinoma	0.1092	3	NA	not done	MSS	4	UCCC	12.23	N	1	1	NA	Female	Matched	4.43662120239
+ucec_msk_2018	P-0001460	P-0001460-T01-IM3	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.1332	3	NA	not done	MSS	3	USC	23.43	N	1	1	B	Female	Matched	3.32746590179
+ucec_msk_2018	P-0001468	P-0001468-T01-IM3	Endometrial Cancer	Uterine Mixed Endometrial Carcinoma	0.0442	3	NA	N	MSS	2	UMEC	14.83	N	1	1	NA	Female	Matched	2.2183106012
+ucec_msk_2018	P-0001565	P-0001565-T01-IM3	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.4177	3	NA	N	MSS	6	USC	12.3	N	1	1	A	Female	Matched	6.65493180359
+ucec_msk_2018	P-0001629	P-0001629-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0843	1	NA	not done	MSS	5	UEC	73.9	N	1	1	B	Female	Matched	5.54577650299
+ucec_msk_2018	P-0001653	P-0001653-T01-IM3	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.5118	3	NA	not done	MSS	2	UCS	8.8	N	1	1	A	Female	Matched	2.2183106012
+ucec_msk_2018	P-0001791	P-0001791-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.2753	3	loss of MLH1, PMS2; retained MSH2, MSH6	Y	MSI-H	23	UEC	20.9	N	1	1	A	Female	Matched	25.5105719137
+ucec_msk_2018	P-0001798	P-0001798-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.1186	2	NA	N	MSS	2	UEC	15.8	N	1	1	C	Female	Matched	2.2183106012
+ucec_msk_2018	P-0001820	P-0001820-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.2070	3	NA	not done	MSS	2	UEC	10.77	N	1	1	NA	Female	Matched	2.2183106012
+ucec_msk_2018	P-0001936	P-0001936-T01-IM3	Endometrial Cancer	Uterine Clear Cell Carcinoma	0.4323	3	NA	not done	MSS	2	UCCC	15.07	N	1	1	A	Female	Matched	2.2183106012
+ucec_msk_2018	P-0001994	P-0001994-T01-IM3	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.5987	3	NA	not done	MSS	2	UCS	42.47	N	1	1	NA	Female	Matched	2.2183106012
+ucec_msk_2018	P-0002004	P-0002004-T01-IM3	Endometrial Cancer	Uterine Dedifferentiated Carcinoma	0.0025	3	NA	N	MSS	10	UDDC	9.23	N	1	1	NA	Female	Matched	11.091553006
+ucec_msk_2018	P-0002142	P-0002142-T01-IM3	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0649	3	NA	not done	MSS	6	USC	10.47	N	1	1	A	Female	Matched	6.65493180359
+ucec_msk_2018	P-0002174	P-0002174-T01-IM3	Endometrial Cancer	Uterine Mixed Endometrial Carcinoma	0.2460	3	NA	not done	MSS	3	UMEC	9.03	N	1	1	C	Female	Matched	3.32746590179
+ucec_msk_2018	P-0002249	P-0002249-T01-IM3	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0524	3	NA	not done	MSI-indeterminate	2	USC	26.53	N	1	1	A	Female	Matched	2.2183106012
+ucec_msk_2018	P-0002280	P-0002280-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0944	2	loss of MLH1, PMS2; retained MSH6	Y	MSI-H	30	UEC	8.8	N	1	1	B	Female	Matched	33.2746590179
+ucec_msk_2018	P-0002315	P-0002315-T01-IM3	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.3252	3	NA	N	MSS	9	USC	33.7	N	1	1	A	Female	Matched	9.98239770538
+ucec_msk_2018	P-0002337	P-0002337-T01-IM3	Endometrial Cancer	Uterine Mixed Endometrial Carcinoma	0.3101	3	NA	N	MSS	4	UMEC	11.27	N	1	1	B	Female	Matched	4.43662120239
+ucec_msk_2018	P-0002357	P-0002357-T01-IM3	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.0189	3	NA	not done	MSS	4	UCS	13.5	N	1	1	NA	Female	Matched	4.43662120239
+ucec_msk_2018	P-0002577	P-0002577-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0219	3	NA	N	MSS	5	UEC	9.83	N	1	1	A	Female	Matched	5.54577650299
+ucec_msk_2018	P-0002708	P-0002708-T01-IM3	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.4683	3	NA	not done	MSS	4	UCS	29	N	1	1	A	Female	Matched	4.43662120239
+ucec_msk_2018	P-0002717	P-0002717-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0349	1	NA	N	MSS	7	UEC	9.03	N	1	1	B	Female	Matched	8.87324240478
+ucec_msk_2018	P-0002784	P-0002784-T01-IM3	Endometrial Cancer	Uterine Mixed Endometrial Carcinoma	0.1643	3	NA	N	MSS	4	UMEC	5.03	N	1	1	B	Female	Matched	4.43662120239
+ucec_msk_2018	P-0002829	P-0002829-T01-IM3	Endometrial Cancer	Uterine Mixed Endometrial Carcinoma	0.1507	3	NA	not done	MSS	4	UMEC	3.83	N	1	1	C	Female	Matched	4.43662120239
+ucec_msk_2018	P-0002945	P-0002945-T01-IM3	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.2126	3	NA	not done	MSS	6	USC	8.03	N	1	1	C	Female	Matched	6.65493180359
+ucec_msk_2018	P-0003014	P-0003014-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0426	2	loss of MLH1, PMS2; retained MSH2, MSH6	Y	MSI-H	38	UEC	37.37	N	1	1	B	Female	Matched	42.1479014227
+ucec_msk_2018	P-0003038	P-0003038-T01-IM5	Endometrial Cancer	Uterine Clear Cell Carcinoma	0.2475	3	NA	not done	MSS	6	UCCC	2.57	N	1	1	B	Female	Matched	5.87231818569
+ucec_msk_2018	P-0003045	P-0003045-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.0601	3	NA	not done	MSI-H	23	UCS	13.77	N	1	1	B	Female	Matched	22.5105530451
+ucec_msk_2018	P-0003204	P-0003204-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.4433	3	NA	not done	MSS	3	USC	19.3	N	1	1	A	Female	Matched	2.93615909284
+ucec_msk_2018	P-0003219	P-0003219-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0047	3	NA	not done	MSS	3	USC	9.77	N	1	1	NA	Female	Matched	2.93615909284
+ucec_msk_2018	P-0003221	P-0003221-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.1146	3	NA	N	MSS	3	UEC	24.27	N	1	1	B	Female	Matched	2.93615909284
+ucec_msk_2018	P-0003244	P-0003244-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.1615	3	NA	not done	MSS	5	UCS	13.5	N	1	1	A	Female	Matched	4.89359848807
+ucec_msk_2018	P-0003453	P-0003453-T01-IM5	Endometrial Cancer	Uterine Clear Cell Carcinoma	0.0335	3	NA	N	MSS	13	UCCC	8.87	N	1	1	C	Female	Matched	12.723356069
+ucec_msk_2018	P-0003544	P-0003544-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.2656	2	NA	N	MSS	1	UEC	4.47	N	1	1	B	Female	Matched	0.978719697615
+ucec_msk_2018	P-0003599	P-0003599-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.7483	3	NA	not done	MSS	4	UCS	12.43	N	1	1	A	Female	Matched	3.91487879046
+ucec_msk_2018	P-0003687	P-0003687-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.2746	3	NA	not done	MSS	4	UEC	2.9	N	1	1	B	Female	Matched	3.91487879046
+ucec_msk_2018	P-0003764	P-0003764-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.5926	3	NA	N	MSS	2	UCS	13.9	N	1	1	A	Female	Matched	1.95743939523
+ucec_msk_2018	P-0003767	P-0003767-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0001	1	loss of MLH1, PMS2; retained MSH2, MSH6	Y	MSI-indeterminate	27	UEC	16.6	N	1	1	NA	Female	Matched	26.4254318356
+ucec_msk_2018	P-0003794	P-0003794-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.4307	3	NA	N	MSS	4	UCS	52.07	N	1	1	A	Female	Matched	3.91487879046
+ucec_msk_2018	P-0003802	P-0003802-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0584	1	NA	N	MSS	7	UEC	69.63	N	1	1	B	Female	Matched	6.8510378833
+ucec_msk_2018	P-0003876	P-0003876-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.7274	3	NA	N	MSS	4	USC	15.87	N	1	1	A	Female	Matched	3.91487879046
+ucec_msk_2018	P-0003982	P-0003982-T01-IM3	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0463	1	NA	N	MSS	7	UEC	34.67	N	1	1	C	Female	Matched	7.76408710418
+ucec_msk_2018	P-0004017	P-0004017-T01-IM5	Endometrial Cancer	Uterine Mixed Endometrial Carcinoma	0.0063	3	NA	not done	MSS	10	UMEC	17.03	N	1	1	B	Female	Matched	9.78719697615
+ucec_msk_2018	P-0004040	P-0004040-T02-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0063	2	NA	N	MSS	6	UEC	63	N	1	1	B	Female	Matched	5.87231818569
+ucec_msk_2018	P-0004075	P-0004075-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0009	3	NA	not done	MSS	3	UEC	7.37	N	1	1	B	Female	Matched	2.93615909284
+ucec_msk_2018	P-0004088	P-0004088-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0056	3	NA	N	MSS	2	USC	4.4	N	1	1	NA	Female	Matched	1.95743939523
+ucec_msk_2018	P-0004136	P-0004136-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0456	1	loss of MLH1, PMS2; retained MSH2, MSH6	Y	MSI-H	28	UEC	5.63	N	1	1	B	Female	Matched	27.4041515332
+ucec_msk_2018	P-0004173	P-0004173-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.2320	1	NA	not done	MSS	7	UEC	41.8	N	1	1	A	Female	Matched	6.8510378833
+ucec_msk_2018	P-0004204	P-0004204-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.3012	3	NA	N	MSS	6	USC	23.7	N	1	1	B	Female	Matched	5.87231818569
+ucec_msk_2018	P-0004255	P-0004255-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0006	3	NA	N	MSI-H	28	UEC	36.1	N	1	1	NA	Female	Matched	27.4041515332
+ucec_msk_2018	P-0004261	P-0004261-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.6083	3	NA	N	MSS	3	USC	45	N	1	1	A	Female	Matched	2.93615909284
+ucec_msk_2018	P-0004300	P-0004300-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.0037	3	NA	N	MSS	1	UCS	65.1	N	1	1	NA	Female	Matched	0.978719697615
+ucec_msk_2018	P-0004379	P-0004379-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0129	3	MSH6 inconclusive	inconclusive	MSI-H	443	UEC	24.9	Y	1	1	NA	Female	Matched	427.700507858
+ucec_msk_2018	P-0004521	P-0004521-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0509	2	NA	N	MSS	5	UEC	20.47	N	1	1	B	Female	Matched	4.89359848807
+ucec_msk_2018	P-0004528	P-0004528-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.4626	3	NA	N	MSS	7	USC	17.4	N	1	1	A	Female	Matched	6.8510378833
+ucec_msk_2018	P-0004544	P-0004544-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.3825	3	NA	N	MSI-indeterminate	6	UCS	5.13	N	1	1	C	Female	Matched	5.87231818569
+ucec_msk_2018	P-0004620	P-0004620-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.1154	3	NA	not done	MSS	3	UEC	44.07	N	1	1	B	Female	Matched	2.93615909284
+ucec_msk_2018	P-0004787	P-0004787-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.4131	3	NA	N	MSI-indeterminate	11	UCS	12.7	N	1	1	B	Female	Matched	10.7659166738
+ucec_msk_2018	P-0004793	P-0004793-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.1679	3	NA	N	MSS	7	USC	8.7	N	1	1	B	Female	Matched	6.8510378833
+ucec_msk_2018	P-0004818	P-0004818-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.3488	3	NA	N	MSS	4	UEC	11.33	N	1	1	C	Female	Matched	3.91487879046
+ucec_msk_2018	P-0004902	P-0004902-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.0010	3	NA	N	MSS	4	UCS	5.37	N	1	1	C	Female	Matched	3.91487879046
+ucec_msk_2018	P-0004911	P-0004911-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.3287	3	NA	N	MSS	2	USC	30.93	N	1	1	A	Female	Matched	1.95743939523
+ucec_msk_2018	P-0004929	P-0004929-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0678	3	NA	N	MSS	7	UEC	31.87	N	1	2	C	Female	Matched	6.8510378833
+ucec_msk_2018	P-0004929	P-0004929-T02-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.2013	3	NA	NA	MSS	6	UEC	31.87	N	1	2	C	Female	Matched	5.87231818569
+ucec_msk_2018	P-0004942	P-0004942-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.3718	3	NA	N	MSS	4	USC	55.83	N	1	1	A	Female	Matched	3.91487879046
+ucec_msk_2018	P-0005046	P-0005046-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.6531	3	NA	N	MSS	6	USC	81.5	N	1	1	A	Female	Matched	5.87231818569
+ucec_msk_2018	P-0005061	P-0005061-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.2109	3	NA	N	MSI-indeterminate	6	USC	37.37	N	1	1	A	Female	Matched	5.87231818569
+ucec_msk_2018	P-0005067	P-0005067-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0175	3	NA	N	MSS	3	USC	17.43	N	1	1	B	Female	Matched	2.93615909284
+ucec_msk_2018	P-0005085	P-0005085-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0405	3	NA	N	MSS	8	USC	21.13	N	1	1	A	Female	Matched	7.82975758092
+ucec_msk_2018	P-0005181	P-0005181-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0205	1	NA	not done	MSS	7	UEC	12.4	N	1	1	B	Female	Matched	6.8510378833
+ucec_msk_2018	P-0005285	P-0005285-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0850	2	NA	not done	MSI-H	34	UEC	12.47	N	1	2	B	Female	Matched	33.2764697189
+ucec_msk_2018	P-0005285	P-0005285-T02-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0003	2	NA	NA	MSS	7	UEC	12.47	N	1	2	B	Female	Matched	6.8510378833
+ucec_msk_2018	P-0005375	P-0005375-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0065	3	NA	N	MSS	NA	USC	5.1	N	1	1	NA	Female	Matched	0.0
+ucec_msk_2018	P-0005501	P-0005501-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0496	3	NA	N	MSS	3	USC	19.47	N	1	1	C	Female	Matched	2.93615909284
+ucec_msk_2018	P-0005532	P-0005532-T01-IM5	Endometrial Cancer	Uterine Mixed Endometrial Carcinoma	0.0017	3	NA	not done	MSS	2	UMEC	13.87	N	1	1	B	Female	Matched	1.95743939523
+ucec_msk_2018	P-0005564	P-0005564-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.1832	3	loss of MLH1, PMS2; retained MSH2, MSH6	Y	MSI-H	114	UEC	9.77	N	1	1	A	Female	Matched	110.59532583
+ucec_msk_2018	P-0005577	P-0005577-T01-IM5	Endometrial Cancer	Uterine Clear Cell Carcinoma	0.1940	3	NA	N	MSS	4	UCCC	10.27	N	1	1	A	Female	Matched	3.91487879046
+ucec_msk_2018	P-0005695	P-0005695-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.3821	3	NA	N	MSS	4	USC	29.83	N	1	1	A	Female	Matched	3.91487879046
+ucec_msk_2018	P-0005883	P-0005883-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.1689	3	NA	not done	MSS	8	UEC	6.97	N	1	1	NA	Female	Matched	7.82975758092
+ucec_msk_2018	P-0006014	P-0006014-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.1780	3	NA	N	MSS	5	USC	9.9	N	1	1	NA	Female	Matched	4.89359848807
+ucec_msk_2018	P-0006103	P-0006103-T01-IM5	Endometrial Cancer	Uterine Mixed Endometrial Carcinoma	0.1831	3	NA	not done	MSS	3	UMEC	13.43	N	1	1	A	Female	Matched	2.93615909284
+ucec_msk_2018	P-0006167	P-0006167-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0300	3	NA	N	MSS	8	USC	16.6	N	1	1	NA	Female	Matched	7.82975758092
+ucec_msk_2018	P-0006201	P-0006201-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0070	2	loss of MLH1, PMS2; retained MSH2, MSH6	Y	MSI-H	52	UEC	18.37	N	1	1	NA	Female	Matched	50.893424276
+ucec_msk_2018	P-0006203	P-0006203-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.7969	3	NA	not done	MSI-indeterminate	1	UEC	12.17	N	1	1	B	Female	Matched	0.978719697615
+ucec_msk_2018	P-0006269	P-0006269-T01-IM5	Endometrial Cancer	Uterine Clear Cell Carcinoma	0.0107	3	loss of MSH2, MSH6; retainted PMS2	Y	MSI-H	75	UCCC	6.63	N	0	1	C	Female	Matched	73.4039773211
+ucec_msk_2018	P-0006344	P-0006344-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0240	1	NA	not done	MSS	8	UEC	85.33	N	1	1	B	Female	Matched	7.82975758092
+ucec_msk_2018	P-0006418	P-0006418-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.1641	2	NA	not done	MSS	8	UEC	13.7	N	1	1	B	Female	Matched	7.82975758092
+ucec_msk_2018	P-0006431	P-0006431-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.4250	3	NA	N	MSS	5	UCS	7.37	N	1	1	A	Female	Matched	4.89359848807
+ucec_msk_2018	P-0006482	P-0006482-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.2418	3	NA	N	MSS	4	USC	17.27	N	1	1	A	Female	Matched	3.91487879046
+ucec_msk_2018	P-0006756	P-0006756-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.4093	3	NA	N	MSS	3	UCS	13.47	N	1	1	C	Female	Matched	2.93615909284
+ucec_msk_2018	P-0006805	P-0006805-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.0211	3	NA	N	MSS	2	UCS	5.4	N	1	2	B	Female	Matched	1.95743939523
+ucec_msk_2018	P-0006805	P-0006805-T02-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.0001	3	NA	NA	MSS	5	UCS	5.4	N	1	2	B	Female	Matched	4.89359848807
+ucec_msk_2018	P-0006830	P-0006830-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0028	2	NA	not done	MSS	7	UEC	27.6	N	1	1	B	Female	Matched	6.8510378833
+ucec_msk_2018	P-0006849	P-0006849-T01-IM5	Endometrial Cancer	Uterine Undifferentiated Carcinoma	0.0205	3	loss of MLH1, PMS2; retained MSH2, MSH6	Y	MSI-H	36	UUC	5.5	N	1	1	B	Female	Matched	35.2339091141
+ucec_msk_2018	P-0007001	P-0007001-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.2862	3	NA	N	MSS	3	UCS	97.6	N	1	1	A	Female	Matched	2.93615909284
+ucec_msk_2018	P-0007155	P-0007155-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.2306	3	NA	N	MSS	5	UEC	22.37	N	1	1	B	Female	Matched	6.8510378833
+ucec_msk_2018	P-0007178	P-0007178-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.1442	3	NA	N	MSS	7	USC	29.6	N	1	1	NA	Female	Matched	6.8510378833
+ucec_msk_2018	P-0007371	P-0007371-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.5481	3	NA	not done	MSS	7	UCS	16.8	N	1	1	B	Female	Matched	6.8510378833
+ucec_msk_2018	P-0007398	P-0007398-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.1677	3	NA	not done	MSS	6	UCS	15.13	N	1	2	A	Female	Matched	5.87231818569
+ucec_msk_2018	P-0007398	P-0007398-T02-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.6707	3	NA	NA	MSI-indeterminate	6	UCS	15.13	N	1	2	A	Female	Matched	4.89359848807
+ucec_msk_2018	P-0007608	P-0007608-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.2481	3	NA	not done	MSS	3	USC	15.23	N	0	1	A	Female	Matched	2.93615909284
+ucec_msk_2018	P-0007628	P-0007628-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0434	2	NA	not done	MSS	6	UEC	44.6	N	0	1	B	Female	Matched	5.87231818569
+ucec_msk_2018	P-0007675	P-0007675-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0609	1	loss of MLH1, PMS2; retained MSH2, MSH6	Y	MSI-H	21	UEC	126.73	N	1	1	B	Female	Matched	20.5531136499
+ucec_msk_2018	P-0007680	P-0007680-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.7231	3	NA	not done	MSI-indeterminate	9	UCS	29.23	N	1	1	A	Female	Matched	8.80847727853
+ucec_msk_2018	P-0007850	P-0007850-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0	3	NA	not done	MSS	3	UEC	9.2	N	1	1	C	Female	Matched	2.93615909284
+ucec_msk_2018	P-0007872	P-0007872-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0912	3	NA	not done	MSS	2	USC	22.37	N	1	1	C	Female	Matched	1.95743939523
+ucec_msk_2018	P-0007932	P-0007932-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.7617	2	NA	not done	MSS	3	UEC	15.3	N	1	1	B	Female	Matched	2.93615909284
+ucec_msk_2018	P-0007973	P-0007973-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0666	2	NA	not done	MSS	5	UEC	26.13	N	1	1	B	Female	Matched	4.89359848807
+ucec_msk_2018	P-0008011	P-0008011-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.0014	3	NA	not done	MSS	5	UCS	30.83	N	1	1	B	Female	Matched	4.89359848807
+ucec_msk_2018	P-0008040	P-0008040-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.0025	3	NA	not done	MSS	2	UCS	10.77	N	1	1	B	Female	Matched	1.95743939523
+ucec_msk_2018	P-0008207	P-0008207-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.1405	2	NA	N	MSS	6	UEC	7.4	N	1	1	B	Female	Matched	5.87231818569
+ucec_msk_2018	P-0008233	P-0008233-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.3921	3	NA	not done	MSS	7	UCS	6.03	N	1	1	B	Female	Matched	6.8510378833
+ucec_msk_2018	P-0008313	P-0008313-T01-IM5	Endometrial Cancer	Uterine Clear Cell Carcinoma	0.2259	3	NA	not done	MSS	3	UCCC	3.5	N	1	1	B	Female	Matched	2.93615909284
+ucec_msk_2018	P-0008394	P-0008394-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0208	3	NA	N	MSS	4	USC	17.5	N	1	1	C	Female	Matched	3.91487879046
+ucec_msk_2018	P-0008444	P-0008444-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.1285	3	loss of MLH1, PMS2; retained MSH2, MSH6	Y	MSI-H	26	UEC	32.57	N	1	1	B	Female	Matched	25.446712138
+ucec_msk_2018	P-0008516	P-0008516-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.1747	3	NA	not done	MSS	3	USC	31.27	N	1	1	A	Female	Matched	2.93615909284
+ucec_msk_2018	P-0008646	P-0008646-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0002	2	loss of MLH1, PMS2; retained MSH2, MSH6	Y	MSI-H	23	UEC	15.03	N	1	1	NA	Female	Matched	22.5105530451
+ucec_msk_2018	P-0008685	P-0008685-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.0010	3	NA	not done	MSS	3	USC	18.03	N	1	1	B	Female	Matched	2.93615909284
+ucec_msk_2018	P-0008717	P-0008717-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.0015	3	NA	not done	MSS	4	UCS	2.6	N	1	1	B	Female	Matched	3.91487879046
+ucec_msk_2018	P-0008732	P-0008732-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.2014	3	NA	not done	MSS	4	UCS	40.9	N	1	1	A	Female	Matched	3.91487879046
+ucec_msk_2018	P-0008864	P-0008864-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.6584	3	NA	N	MSS	9	UEC	19.13	N	0	1	B	Female	Matched	8.80847727853
+ucec_msk_2018	P-0008936	P-0008936-T01-IM5	Endometrial Cancer	Uterine Mixed Endometrial Carcinoma	0.0001	3	NA	not done	MSS	5	UMEC	11.9	N	1	1	NA	Female	Matched	4.89359848807
+ucec_msk_2018	P-0009143	P-0009143-T01-IM5	Endometrial Cancer	Uterine Mixed Endometrial Carcinoma	0.5702	3	NA	N	MSS	10	UMEC	18.67	N	1	1	A	Female	Matched	9.78719697615
+ucec_msk_2018	P-0009267	P-0009267-T01-IM5	Endometrial Cancer	Uterine Clear Cell Carcinoma	0.0003	3	NA	N	MSS	4	UCCC	12.17	N	0	1	NA	Female	Matched	4.89359848807
+ucec_msk_2018	P-0009316	P-0009316-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0912	3	NA	N	MSS	11	UEC	21.37	N	1	1	B	Female	Matched	10.7659166738
+ucec_msk_2018	P-0009518	P-0009518-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.1371	1	NA	N	MSS	7	UEC	75.33	N	1	1	B	Female	Matched	6.8510378833
+ucec_msk_2018	P-0009585	P-0009585-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0001	3	loss of MLH1, PMS2; retained MSH2, MSH6	Y	MSI-H	35	UEC	18.3	N	1	1	A	Female	Matched	34.2551894165
+ucec_msk_2018	P-0009595	P-0009595-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.1731	3	NA	not done	MSS	4	UEC	1.9	N	1	1	B	Female	Matched	3.91487879046
+ucec_msk_2018	P-0009651	P-0009651-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.2540	3	NA	not done	MSS	7	UCS	28.03	N	1	1	NA	Female	Matched	6.8510378833
+ucec_msk_2018	P-0009709	P-0009709-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.0722	3	NA	N	MSS	4	UCS	12.6	N	1	1	NA	Female	Matched	3.91487879046
+ucec_msk_2018	P-0009835	P-0009835-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.2390	3	NA	not done	MSS	3	USC	7.67	N	1	1	C	Female	Matched	2.93615909284
+ucec_msk_2018	P-0010182	P-0010182-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0000	3	NA	N	MSI-indeterminate	NA	UEC	6.3	N	1	1	C	Female	Matched	0.0
+ucec_msk_2018	P-0010217	P-0010217-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0011	1	NA	N	MSS	6	UEC	22.43	N	1	1	B	Female	Matched	5.87231818569
+ucec_msk_2018	P-0010221	P-0010221-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.3274	3	NA	not done	MSS	5	UCS	9.93	N	1	1	A	Female	Matched	3.91487879046
+ucec_msk_2018	P-0010283	P-0010283-T01-IM5	Endometrial Cancer	Uterine Mixed Endometrial Carcinoma	0.1744	3	NA	N	MSS	6	UMEC	10.77	N	1	1	A	Female	Matched	5.87231818569
+ucec_msk_2018	P-0010310	P-0010310-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.1584	3	NA	N	MSS	9	UEC	7.17	N	1	1	B	Female	Matched	8.80847727853
+ucec_msk_2018	P-0010660	P-0010660-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.3810	2	NA	not done	MSS	11	UEC	38.23	N	1	1	B	Female	Matched	10.7659166738
+ucec_msk_2018	P-0010671	P-0010671-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0314	2	NA	not done	MSI-H	26	UEC	11.23	N	0	1	NA	Female	Matched	25.446712138
+ucec_msk_2018	P-0010782	P-0010782-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.4356	3	NA	not done	MSS	4	USC	5.6	N	1	1	A	Female	Matched	3.91487879046
+ucec_msk_2018	P-0010828	P-0010828-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0082	2	loss of MLH1, PMS2; retained MSH2, MSH6	Y	MSI-H	29	UEC	30.5	N	1	1	C	Female	Matched	28.3828712308
+ucec_msk_2018	P-0010967	P-0010967-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0001	3	loss of MSH6; retained MLH1, MSH2, PMS2	Y	MSS	162	UEC	26.93	Y	0	1	NA	Female	Matched	158.552591014
+ucec_msk_2018	P-0011013	P-0011013-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.1119	1	loss of MLH1, PMS2; retained MSH2, MSH6	Y	MSI-H	32	UEC	21.63	N	1	1	B	Female	Matched	31.3190303237
+ucec_msk_2018	P-0011101	P-0011101-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.0168	3	NA	not done	MSS	7	UCS	6.73	N	1	1	C	Female	Matched	6.8510378833
+ucec_msk_2018	P-0011145	P-0011145-T01-IM5	Endometrial Cancer	Uterine Serous Carcinoma/Uterine Papillary Serous Carcinoma	0.3566	3	NA	not done	MSS	3	USC	10.07	N	1	1	A	Female	Matched	2.93615909284
+ucec_msk_2018	P-0011174	P-0011174-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.1187	2	NA	N	MSS	5	UEC	66.87	N	1	1	B	Female	Matched	4.89359848807
+ucec_msk_2018	P-0011222	P-0011222-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0032	3	loss of MLH1, PMS2; retained MSH2, MSH6	Y	MSI-H	29	UEC	8.83	N	0	1	B	Female	Matched	28.3828712308
+ucec_msk_2018	P-0011224	P-0011224-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0384	3	NA	N	MSS	7	UEC	7.9	N	0	1	B	Female	Matched	6.8510378833
+ucec_msk_2018	P-0011262	P-0011262-T01-IM5	Endometrial Cancer	Uterine Mixed Endometrial Carcinoma	0.0018	3	loss of MSH2, MSH6; retained PMS2	Y	MSI-H	51	UMEC	17.5	N	0	1	NA	Female	Matched	50.893424276
+ucec_msk_2018	P-0011330	P-0011330-T01-IM5	Endometrial Cancer	Uterine Endometrioid Carcinoma	0.0300	3	NA	N	MSS	11	UEC	12.67	N	1	1	B	Female	Matched	10.7659166738
+ucec_msk_2018	P-0011344	P-0011344-T01-IM5	Endometrial Cancer	Uterine Carcinosarcoma/Uterine Malignant Mixed Mullerian Tumor	0.3214	3	NA	not done	MSS	6	UCS	5.57	N	1	1	B	Female	Matched	5.87231818569
+ucec_msk_2018	P-0011385	P-0011385-T01-IM5	Endometrial Cancer	Uterine Clear Cell Carcinoma	0.0036	3	loss of MSH6; retained MLH1, MSH2, PMS2	Y	MSI-H	57	UCCC	7.77	N	0	1	NA	Female	Matched	52.8508636712
