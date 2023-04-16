@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html>
+
+
+<!--
+    
+    Note to Students:
+
+        This is a very short introduction to using Javascript in the browser.
+
+        To see this as a webpage, you have to start a *Local Web Server*. There are many ways to do this: since you all have python installed, we will use python.
+
+        - Open terminal
+
+        - 'cd' into the directory where this html file is (js_in_webpage.html)
+
+        - Type the following into the terminal and hit 'enter':
+            
+            ### IN PYTHON 2 ### 
+            python -m SimpleHTTPServer
+            
+            ### IN PYTHON 3 ### 
+            python -m http.server 
+
+            your server should read something like: Serving HTTP on 0.0.0.0 port 8000 ...
+
+        - now go to any browser and type in the HTTP address and the filename: something like:
+
+            http://0.0.0.0:8000/js_in_webpage.html
+
+            or
+
+            http://localhost:8000/js_in_webpage.html
+        
+        - Congrats: you now have a local HTTP server running. Now, every time you change this file and save it, when you reload the browser you will see your changes!
+-->
+
+<head><title style="font-family: monospace"> Deepika Dilip: Assignment 5</title></head>
+<style>
+    body {font-family: sans-serif;}
+    h1   {font-family: monospace;
+        text-align: left;}
+    h2   {text-align: center;
+    color : darkgray;}
+    p    {color: black;}
+    h3 {color: red;}
+    table, th, td {
+        border: 0.5px solid;
+    }
+    </style>
+<body>
+
+<h1 style="font-family: monospace"> Deepika Dilip: Assignment 5</h1>
+
+<h2> Question 1</h2>
+<em> Create a function to reverse any word that you type in. This can be typed into either an input box or an alert box, and then print the result in a box or on the webpage. </em>
+<!-- <h2>All of the below is created with Javascript. </h2>
+-->
+
+<!--
+<script type="text/javascript">
+
+// Here are some examples of things that you might want to do with Javascript
+
+// writing to a document directly
+
+document.write('<p><b>While you are working in Javascript (or any language), it is really important to be able to debug. Some browsers offer very simple ways to see what is happening on a page.</b></p>');
+document.write('<p>Chrome and Firefox in particular offer good Developer Tools and Javascript console access</p><br>');
+</script>
+-->
+
+<p>
+    <form>
+        <input id="myText" type="text" size="4">
+        <input type="button" value="Reverse" onClick="sayhi();">
+    </form>
+</p>
+
+
+
+<script type="text/javascript">
+    function sayhi() {
+        var x= document.getElementById("spit_it_out");
+        var y= document.getElementById("myText");
+        var chars = y.value;
+        chars = chars.split('')
+        chars = chars.reverse();
+        chars = chars.join("");
+        x.innerHTML =chars;
+//         x.innerHTML = y.value; // x gets printed out
+   //         var x = document.getElementById("myText");
+   //         alert(x.value);
+    }
+</script>    
+
+
+<h3> 
+<div id="spit_it_out"> </div>
+
+</h3>
+
+
+
+<h2> Question 2</h2>
+<em> Create a function that takes an input number, and prints a table with the first 20 multiples of the number, in order 5x4 </em>
+
+<p>
+    <form>
+        <input id="input_q2" type="text" size="4">
+        <input type="button" value="Multiples" onClick="generateTable();">
+    </form>
+</p>
+
+
+
+<script type="text/javascript">
+    function question2(y) {
+
+        var a = y.value;
+        a = parseInt(a);
+        const table_array = []
+        for (let i = 1; i < 21; i++) {
+  //          a  += 1;
+            b = a*i;
+            table_array.push(b);
+        }
+    return(table_array)
+
+//         x.innerHTML = y.value; // x gets printed out
+   //         var x = document.getElementById("myText");
+   //         alert(x.value);
+    }
+    function generateTable() {
+        var x= document.getElementById("q2");
+        var y= document.getElementById("input_q2");
+        table_array = question2(y);
+        str = '<table><tr>';
+        
+        let i = 0;
+
+        while (i < table_array.length) {
+            str = str + '<td>' + table_array[i] + '</td>'
+            i++;
+            if(i % 5 == 0) {
+                str = str + '</tr><tr>'
+            }
+        }
+        str = str + '</table>';
+        x.innerHTML =str;
+        }
+
+    
+</script>    
+
+<h3> 
+<!-- Question 2 prints here-->
+    <div id="q2">
+        
+         </div>
+    
+</h3>
+<!-- 
+<h2> Question 3</h2>
+<em> Write a function to load the presidents.csv data and display the data as an html table (you may use a cdv parser from any available library, though I encourage you to try the d3 one).</em>
+-->
+
+<!-- Presidents Table prints here-->
+
+<!-- 
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.7.4/d3.min.js"></script>
+-->
+<!-- <script type="text/javascript" src="president_print.js"></script> -->
+
+<!-- 
+<div id="tbl_presidents">
+</div>
+
+<script>
+var tbl =  d3.csv("https://raw.githubusercontent.com/charleyferrari/CUNY_DATA_608/master/module5/data/presidents.csv", function(data) {
+  return {
+    Name : data.Name,
+    Height : data.Height,
+    Weight : data.Weight
+  };
+}) 
+console.log(tbl)
+
+</script>
+    
+<script>
+//    const president_tbl = [];
+var tbl_collapsed = '<table><tr><td>fuck';
+
+ const president_tbl = [];
+    d3.csv("https://raw.githubusercontent.com/charleyferrari/CUNY_DATA_608/master/module5/data/presidents.csv", function(data) {
+            for (var i = 0; i < data.length; i++) {
+                var shit = String(data[i].Name);
+     //         console.log(data[i].Name);
+   //           console.log(shit);
+    //            console.log(data[i].Height);
+      //           president_tbl = president_tbl + data[i].Name;
+                 president_tbl.push(String(data[i].Name));
+                  president_tbl.push(String(data[i].Height));
+        var tbl_collapsed = tbl_collapsed +  "</td><td>" + data[i].Name;
+            var tbl_collapsed = tbl_collapsed +  "</td><td>" + shit;
+
+            }
+    });
+    var tbl_collapsed = tbl_collapsed + '</td></tr></table>';
+//    console.log(tbl_collapsed);
+
+    document.getElementById("tbl_presidents").innerHTML = tbl_collapsed;
+
+    
+ //   console.log(president_tbl);
+
+   // var tbl_string = president_tbl.join("</td><td>");
+    //console.log(tbl_string);
+    //var tbl_collapsed = tbl_collapsed + tbl_string;
+   // var tbl_collapsed = tbl_collapsed + '</td></tr></table>';
+ //   document.getElementById("tbl_presidents").innerHTML = tbl_collapsed;
+
+</script>
+
+
+
+
+<script type="text/javascript">
+
+// Find this bug in the console and fix it!
+
+document.write('<p>These are really helpful for finding bugs!</p><br>');
+</script>
+
+
+<script type="text/javascript">
+
+// Variables and Math:
+
+var num1 = '5';
+var num2 = '5';
+var answer;
+
+answer = +num1 + +num2
+
+document.write(num1 + ' plus ' + num2 + '= ' + answer );
+
+document.write('<p>An example of a random number would be ' + Math.random() + '</p>');
+
+var rightNow = new Date();
+
+document.write('<p>Right now it is ' + rightNow + '<p>');
+
+</script>
+
+
+<script type="text/javascript">
+
+document.write('<br><p>Is a number even or odd, is it divisible by 3?</p>')
+
+// Basic functions
+
+function divis(num,d){
+    var evenOdd = 'odd';
+    if (num%2 == 0) {evenOdd = 'even';};
+
+    var ddiv = false;
+    if (num%d == 0) {ddiv = true;};
+
+    var dtext; 
+    if (ddiv==true){dtext = 'is '} else (dtext = 'is not ');
+
+    var str;
+    str = num + ' is ' + evenOdd +' and ' + dtext + 'divisible by ' + d;
+    
+    return(str);
+};
+
+function calc(){
+    var t = document.getElementById("target");
+    t.innerHTML = divis(document.getElementById('num').value, 3);
+}
+</script>
+
+<p>
+<form>
+    <input id="num" type="number" size="4">
+    <input type="button" value="check" onClick="calc();">
+</form>
+</p>
+
+<div id="target"></div>
+
+<script type="text/javascript" src="other_script.js"></script>
+
+<script type="text/javascript"> document.write(myScript());</script>
+-->
+</body>
+</html>
