@@ -255,7 +255,7 @@ NULL
 #'
 
 getCyto.ELN <- function(dt.cyto = dt.cyto) {
-  dt.matching.regex = fread(system.file('extdata', 'nlp_parser_fish_matching_2022.txt', package='karyoParser'))
+  dt.matching.regex = fread('https://raw.githubusercontent.com/deepssquared/CUNY.MDS/main/CUNY_DATA_608/Final%20Project/inst/extdata/nlp_parser_fish_matching_2022.txt') # should work
   parser_regex = unlist(dt.matching.regex$parser_regex)
   parser_regex = parser_regex[parser_regex != ""]
   cyto_regex = unlist(dt.matching.regex$leukNLP_Regex)
